@@ -8,7 +8,8 @@ public class Minibus extends MedioTransporte
     }
 
     /*
-    public List<String> cartelitos(Parada ubicacion){
+    public List<String> cartelitos(Parada ubicacion)
+    {
 		List<String> cartelitos = new ArrayList<>();
 		return cartelitos;
 	}

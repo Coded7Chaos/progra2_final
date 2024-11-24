@@ -6,17 +6,26 @@ public class Ruta
 {
     private int id;
     private String nombre;
-    private List<Punto> puntos;
+    private MedioTransporte transporte;
+    private List<Parada> paradas;
 
-    public Ruta(int id, String nombre, List<Punto> puntos) {
+    public Ruta(int id, String nombre, MedioTransporte transporte, List<Parada> paradas)
+    {
         this.id = id;
         this.nombre = nombre;
-        this.puntos = puntos;
+        this.transporte = transporte;
+        this.paradas = paradas;
     }
 
     public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
     public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
 
-    public List<Punto> getPuntos() { return puntos; }
+    public MedioTransporte getTransporte() { return transporte; }
+    public void setTransporte(MedioTransporte transporte) { this.transporte = transporte; }
+
+    public List<Parada> getParadas() { return paradas; }
+    public void setParadas(List<Parada> paradas) { this.paradas = paradas; }
 }
