@@ -36,7 +36,7 @@ public class ParadaDAO implements ParadaDAOInterface
     @Override
     public List<Parada> obtenerParadas()
     {
-        // Commit
+        // Commit de prueba CON MENSAJE
 	    List<Parada> paradas = new ArrayList<>();
 
 	    String query = """
