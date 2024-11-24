@@ -4,6 +4,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
+import com.transporte.models.Zona;
 import com.transporte.config.DatabaseConnection;
 import com.transporte.models.Parada;
 import com.transporte.utils.Zona;
