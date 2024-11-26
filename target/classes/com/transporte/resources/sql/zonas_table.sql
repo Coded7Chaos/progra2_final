@@ -4,3 +4,6 @@ CREATE TABLE Zonas (
     
     PRIMARY KEY (id_zona)
 );
+
+INSERT INTO Zonas (nombre)
+VALUES ("San Pedro");

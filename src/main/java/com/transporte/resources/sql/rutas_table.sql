@@ -8,3 +8,6 @@ CREATE TABLE Rutas (
     
     PRIMARY KEY (id_ruta)
 );
+
+INSERT INTO Rutas (nombre_inicio, nombre_fin, horario_inicio, horario_fin, estado)
+VALUES ("San Pedro", "Achumani", "06:00", "23:00", 0);

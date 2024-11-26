@@ -7,3 +7,6 @@ CREATE TABLE Transportes (
     PRIMARY KEY (id_transporte),
     FOREIGN KEY (id_ruta) REFERENCES Rutas(id_ruta)
 );
+
+INSERT INTO Transportes (id_ruta, nombre, tipo)
+VALUES (1, "San Pedro - Achumani", "Pumakatari");

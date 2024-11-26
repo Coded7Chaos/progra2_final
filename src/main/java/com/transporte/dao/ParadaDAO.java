@@ -84,26 +84,26 @@ public class ParadaDAO implements ParadaDAOInterface
         List<Parada> paradas = new ArrayList<>();
 
         try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement ps = conn.prepareStatement("SELECT id, nombre, longitud, latitud, direccion, color, idZona, estado FROM parada WHERE id = ?"))
+                PreparedStatement ps = conn.prepareStatement("SELECT id_parada, id_zona, nombre, latitud, longitud, direccion, color, estado FROM Paradas WHERE id_ruta = ?"))
         {
             ps.setInt(1, idRuta);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next())
             {
-                int id              = rs.getInt("id");
+                int id_parada       = rs.getInt("id_parada");
+                int id_zona         = rs.getInt("id_zona");
 	    		String nombre       = rs.getString("nombre");
+                double latitud      = rs.getDouble("latitud");
 	    		double longitud     = rs.getDouble("longitud");
-	    		double latitud      = rs.getDouble("latitud");
 	    		String direccion    = rs.getString("direccion");
                 String color        = rs.getString("color");
-                int idZona          = rs.getInt("idZona");
 	    		boolean estado      = rs.getBoolean("estado");
 
                 ZonaDAO zDAO = new ZonaDAO();
-	    		Zona zona = zDAO.getZonaDeParada(idZona);
+	    		Zona zona = zDAO.getZonaDeParada(id_zona);
 
-                Parada parada = new Parada(id, nombre, longitud, latitud, direccion, color,zona, estado);
+                Parada parada = new Parada(id_parada, nombre, longitud, latitud, direccion, color, zona, estado);
                 paradas.add(parada);
             }
 

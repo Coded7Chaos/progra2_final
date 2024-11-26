@@ -58,4 +58,10 @@ public class Parada
 
     public boolean isEstado() { return estado; }
     public void setEstado(boolean estado) { this.estado = estado; }
+
+    @Override
+    public String toString()
+    {
+        return String.format("{id=%d, nombre=%s, lat=%f, lon=%f, direccion=%s, color=%s}", idParada, nombre, latitud, longitud, direccion, color);
+    }
 }

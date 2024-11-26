@@ -1,7 +1,7 @@
 package com.transporte;
 
 import com.transporte.gui.CrearParada;
-import com.transporte.gui.TransporteApp;
+import com.transporte.gui.RouteVisualizer;
 import javax.swing.SwingUtilities;
 
 public class App
@@ -10,6 +10,6 @@ public class App
     {
         //CrearParada np = new CrearParada();
         //np.setVisible(true);
-        SwingUtilities.invokeLater(TransporteApp::new);
+        SwingUtilities.invokeLater(RouteVisualizer::new);
     }
 }

@@ -32,19 +32,52 @@ public class TransporteDAO
                 }
                 else if ("Pumakatari".equals(tipo))
                 {
-                    List<String> paradas = obtenerParadas(conn, id);
-                    transportes.add(new Pumakatari(id, nombre, paradas));
+                    transportes.add(new Pumakatari(id, nombre));
                 }
                 else if ("Teleferico".equals(tipo))
                 {
-                    List<String> estaciones = obtenerParadas(conn, id);
-                    transportes.add(new Teleferico(id, nombre, estaciones));
+                    transportes.add(new Teleferico(id, nombre));
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return transportes;
+    }
+
+    public MedioTransporte obtenerTransportePorRuta(int id)
+    {
+        MedioTransporte transporte = new Minibus(0, "Ruta generica");
+
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement("SELECT id_transporte, nombre, tipo FROM Transportes WHERE id_ruta = ?"))
+        {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next())
+            {
+                int id_transporte   = rs.getInt("id_transporte");
+                String nombre       = rs.getString("nombre");
+                String tipo         = rs.getString("tipo");
+
+                if ("Minibus".equals(tipo))
+                {
+                    transporte = new Minibus(id_transporte, nombre);
+                }
+                else if ("Pumakatari".equals(tipo))
+                {
+                    transporte = new Pumakatari(id_transporte, nombre);
+                }
+                else if ("Teleferico".equals(tipo))
+                {
+                    transporte = new Teleferico(id_transporte, nombre);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return transporte;
     }
 
     private List<String> obtenerParadas(Connection conn, int idTransporte) throws SQLException
