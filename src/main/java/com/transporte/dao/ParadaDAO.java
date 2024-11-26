@@ -79,6 +79,42 @@ public class ParadaDAO implements ParadaDAOInterface
     }
 
     @Override
+    public List<Parada> obtenerParadaPorId(int idRuta)
+    {
+        List<Parada> paradas = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement("SELECT id, nombre, longitud, latitud, direccion, color, idZona, estado FROM parada WHERE id = ?"))
+        {
+            ps.setInt(1, idRuta);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next())
+            {
+                int id              = rs.getInt("id");
+	    		String nombre       = rs.getString("nombre");
+	    		double longitud     = rs.getDouble("longitud");
+	    		double latitud      = rs.getDouble("latitud");
+	    		String direccion    = rs.getString("direccion");
+                String color        = rs.getString("color");
+                int idZona          = rs.getInt("idZona");
+	    		boolean estado      = rs.getBoolean("estado");
+
+                ZonaDAO zDAO = new ZonaDAO();
+	    		Zona zona = zDAO.getZonaDeParada(idZona);
+
+                Parada parada = new Parada(id, nombre, longitud, latitud, direccion, color,zona, estado);
+                paradas.add(parada);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return paradas;
+    }
+
+    @Override
     public List<Parada> obtenerParadasPorRuta(int rutaId)
     {
         List<Parada> paradas = new ArrayList<>();
@@ -91,41 +127,41 @@ public class ParadaDAO implements ParadaDAOInterface
             """;
 
 	    try (Connection conn = DatabaseConnection.getConnection();
-	            PreparedStatement stmt = conn.prepareStatement(query)){
-                    stmt.setInt(1, rutaId);
-                    try(ResultSet rs = stmt.executeQuery()){
-                        while (rs.next())
-                        {
-                            int id              = rs.getInt("id");
-                            String nombre       = rs.getString("nombre");
-                            double longitud     = rs.getDouble("longitud");
-                            double latitud      = rs.getDouble("latitud");
-                            String direccion    = rs.getString("direccion");
-                            String color        = rs.getString("color");
-                            int idZona          = rs.getInt("idZona");
-                            boolean estado      = rs.getBoolean("estado");
-                            
-                            ZonaDAO zDAO = new ZonaDAO();
-                            Zona zona = zDAO.getZonaDeParada(idZona);
-            
-            
-                            // Crear el objeto Parada
-                            Parada parada = new Parada(id, nombre, longitud, latitud, direccion, color,zona, estado);
-                            
-                            // Agregar a la lista
-                            paradas.add(parada);
-                        }} catch(SQLException e) {
-                        e.printStackTrace();
-                    }
+	            PreparedStatement stmt = conn.prepareStatement(query))
+        {
+            stmt.setInt(1, rutaId);
+            try(ResultSet rs = stmt.executeQuery())
+            {
+                while (rs.next())
+                {
+                    int id              = rs.getInt("id");
+                    String nombre       = rs.getString("nombre");
+                    double longitud     = rs.getDouble("longitud");
+                    double latitud      = rs.getDouble("latitud");
+                    String direccion    = rs.getString("direccion");
+                    String color        = rs.getString("color");
+                    int idZona          = rs.getInt("idZona");
+                    boolean estado      = rs.getBoolean("estado");
                     
-                } catch (SQLException e){
-                    e.printStackTrace();
+                    ZonaDAO zDAO = new ZonaDAO();
+                    Zona zona = zDAO.getZonaDeParada(idZona);
+    
+    
+                    // Crear el objeto Parada
+                    Parada parada = new Parada(id, nombre, longitud, latitud, direccion, color,zona, estado);
+                    
+                    // Agregar a la lista
+                    paradas.add(parada);
                 }
-                return paradas;
-                    }
+            } catch(SQLException e) {
+                e.printStackTrace();
+            }         
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return paradas;
+    }
                 
-
-
     @Override
     public void actualizarParada(Parada parada)
     {
