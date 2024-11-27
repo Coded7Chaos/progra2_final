@@ -84,7 +84,7 @@ public class MainWindow extends JFrame {
         btnAgregar.setFocusPainted(false);
         bottomPanel.add(btnAgregar);
 
-        btnModificar = new JButton("Modificar");
+        /*btnModificar = new JButton("Modificar");
         btnModificar.setFont(new Font("Arial", Font.PLAIN, 14));
         btnModificar.setBackground(new Color(255, 153, 51));
         btnModificar.setForeground(Color.WHITE);
@@ -96,7 +96,7 @@ public class MainWindow extends JFrame {
         btnEliminar.setBackground(new Color(204, 51, 51));
         btnEliminar.setForeground(Color.WHITE);
         btnEliminar.setFocusPainted(false);
-        bottomPanel.add(btnEliminar);
+        bottomPanel.add(btnEliminar);*/
 
         comboBoxRutas.addActionListener(new ActionListener() {
             @Override
@@ -107,7 +107,7 @@ public class MainWindow extends JFrame {
         });
 
         btnAgregar.addActionListener(e -> {
-			CrearParada np = new CrearParada();
+			CrearParada np = new CrearParada(rutas);
             np.setVisible(true);
 		});
 

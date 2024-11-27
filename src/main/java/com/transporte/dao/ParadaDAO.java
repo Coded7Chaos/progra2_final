@@ -16,16 +16,16 @@ public class ParadaDAO implements ParadaDAOInterface
     public void guardarParada(Parada parada)
     {
         try (Connection conn = DatabaseConnection.getConnection();
-	            PreparedStatement stmt = conn.prepareStatement("INSERT INTO parada (id_ruta, id_zona, nombre, latitud, longitud, direccion, color, estado) VALUES (?, ?, ?, ?, ?, ?, ?)"))
+	            PreparedStatement stmt = conn.prepareStatement("INSERT INTO Paradas (id_ruta, id_zona, nombre, latitud, longitud, direccion, color, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"))
         {
             stmt.setInt(1, parada.getIdRuta());
             stmt.setInt(2, parada.getZona().getIdZona());
             stmt.setString(3, parada.getNombre());
-            stmt.setDouble(4, parada.getLongitud());
-            stmt.setDouble(5, parada.getLatitud());
+            stmt.setDouble(4, parada.getLatitud());
+            stmt.setDouble(5, parada.getLongitud());
             stmt.setString(6, parada.getDireccion());
             stmt.setString(7, parada.getColor() == null ? "#FFFFFF" : parada.getColor());
-            stmt.setBoolean(8, parada.isEstado());
+            stmt.setBoolean(8, false);
 
 		    int filasAfectadas = stmt.executeUpdate();
 		    if (filasAfectadas > 0)
@@ -67,7 +67,7 @@ public class ParadaDAO implements ParadaDAOInterface
                 ZonaDAO zDAO = new ZonaDAO();
 	    		Zona zona = zDAO.getZonaDeParada(id_zona);
 
-                Parada parada = new Parada(id_parada, id_ruta, nombre, longitud, latitud, direccion, color, zona, estado);
+                Parada parada = new Parada(id_parada, id_ruta, nombre, latitud, longitud, direccion, color, zona, estado);
                 
 	    		// Agregar a la lista
 	    		paradas.add(parada);
@@ -105,7 +105,7 @@ public class ParadaDAO implements ParadaDAOInterface
                 ZonaDAO zDAO = new ZonaDAO();
 	    		Zona zona = zDAO.getZonaDeParada(id_zona);
 
-                Parada parada = new Parada(id_parada, id_ruta, nombre, longitud, latitud, direccion, color, zona, estado);
+                Parada parada = new Parada(id_parada, id_ruta, nombre, latitud, longitud, direccion, color, zona, estado);
                 paradas.add(parada);
             }
 

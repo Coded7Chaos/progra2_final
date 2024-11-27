@@ -13,27 +13,28 @@ public class Parada
 	private boolean estado;
 
 
-	public Parada(String nombre, double longitud, double latitud, String direccion, Zona zona)
+	public Parada(int idRuta, String nombre, double latitud, double longitud, String direccion, Zona zona)
     {
+        this.idRuta     = idRuta;
         this.nombre     = nombre;
-        this.longitud   = longitud;
         this.latitud    = latitud;
+        this.longitud   = longitud;
         this.direccion  = direccion;
         this.zona       = zona;
     }
 
-    public Parada(int idParada, int idRuta, String nombre, double longitud, double latitud, String direccion, String color, Zona zona, boolean estado)
+    public Parada(int idParada, int idRuta, String nombre, double latitud, double longitud, String direccion, String color, Zona zona, boolean estado)
     {
         this.idParada   = idParada;
         this.idRuta     = idRuta;
         this.nombre     = nombre;
-        this.longitud   = longitud;
         this.latitud    = latitud;
+        this.longitud   = longitud;
         this.direccion  = direccion;
         this.color      = color;
         this.zona       = zona;
         this.estado     = estado;
-		this.color      = color != null ? color : "#FFFF00"; // Color amarillo por defecto
+		this.color      = color != null ? color : "#FFFFFF"; // Color amarillo por defecto
     }
 
 	public int getIdParada() { return idParada; }

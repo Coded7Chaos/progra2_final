@@ -1,8 +1,7 @@
 package com.transporte.gui;
 
 import java.awt.Color;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+
 import javax.swing.border.EmptyBorder;
 
 import org.jxmapviewer.JXMapViewer;
@@ -22,13 +21,9 @@ import com.transporte.dao.ZonaDAO;
 import com.transporte.utils.Fonts;
 import com.transporte.models.Parada;
 import com.transporte.models.Zona;
+import com.transporte.models.Ruta;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import javax.swing.JLabel;
-import javax.swing.JButton;
-import javax.swing.SwingConstants;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
 
 public class CrearParada extends JFrame
 {
@@ -44,7 +39,7 @@ public class CrearParada extends JFrame
 	double longitude;
 	double latitude;
 
-	public CrearParada()
+	public CrearParada(List<Ruta> rutas)
     {
 		
 		mapViewer = new JXMapViewer();
@@ -67,7 +62,7 @@ public class CrearParada extends JFrame
 	        
 	    JPanel panel_1 = new JPanel();
 	    panel.add(panel_1);
-	    panel_1.setLayout(new GridLayout(5, 1, 0, 0));
+	    panel_1.setLayout(new GridLayout(6, 1, 0, 0));
 	    
 	    JLabel lblNewLabel = new JLabel("Agregar nueva parada ");
 	    lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -83,12 +78,21 @@ public class CrearParada extends JFrame
 		JTextField nombreParada  = new JTextField();
 		panel_1.add(nombreParada);
 
-
 		JLabel lblNewLabel_8 = new JLabel("Direccion de la parada");
 		panel_1.add(lblNewLabel_8);
 
 		JTextField direccionParada  = new JTextField();
 		panel_1.add(direccionParada);
+
+		JLabel lblNewLabel_f1 = new JLabel("Ruta:");
+		panel_1.add(lblNewLabel_f1);
+
+		String[] nombresRutas = new String[rutas.size()];
+        for (int i = 0; i < rutas.size(); i++)
+            nombresRutas[i] = String.format("%s - %s", rutas.get(i).getNombreInicio(), rutas.get(i).getNombreFin());
+
+		JComboBox<String> comboBoxRutas = new JComboBox<>(nombresRutas);
+	    panel_1.add(comboBoxRutas);
 
 
 	    JPanel panel_3 = new JPanel();
@@ -165,7 +169,8 @@ public class CrearParada extends JFrame
 				} 
 				else
 				{
-					Parada nuevaParada = new Parada(nombreParada.getText(), latitude, longitude, direccionParada.getText(),(Zona) comboBox.getSelectedItem());
+					int index = comboBoxRutas.getSelectedIndex();
+					Parada nuevaParada = new Parada(rutas.get(index).getId(), nombreParada.getText(), latitude, longitude, direccionParada.getText(), (Zona)comboBox.getSelectedItem());
 					pDAO.guardarParada(nuevaParada);
 
 					JOptionPane.showMessageDialog(panel, "Datos guardados con exito!");
