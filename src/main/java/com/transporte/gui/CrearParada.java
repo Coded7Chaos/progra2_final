@@ -52,8 +52,8 @@ public class CrearParada extends JFrame
 		mapViewer.setZoom(4);
         mapViewer.setAddressLocation(new GeoPosition(-16.51, -68.11));
 
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(100, 100, 700, 400);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		
@@ -117,8 +117,8 @@ public class CrearParada extends JFrame
 				GeoPosition geoPosition = mapViewer.convertPointToGeoPosition(e.getPoint());
 				latitude = geoPosition.getLatitude();
 				longitude = geoPosition.getLongitude();
-				latitud.setText(String.valueOf(latitude)); 
-				longitud.setText(String.valueOf(longitude)); 
+				latitud.setText(String.format("%.3f", latitude)); 
+				longitud.setText(String.format("%.3f", longitude)); 
 			}
 		});
 
@@ -161,14 +161,14 @@ public class CrearParada extends JFrame
 			{
                 if(latitud.getText()==null || longitud.getText()==null || nombreParada.getText()==null)
 				{
-					JOptionPane.showMessageDialog(panel,"Error: debe llenar todas las opciones de manera correcta");
+					JOptionPane.showMessageDialog(panel, "Error: debe llenar todas las opciones de manera correcta");
 				} 
 				else
 				{
 					Parada nuevaParada = new Parada(nombreParada.getText(), latitude, longitude, direccionParada.getText(),(Zona) comboBox.getSelectedItem());
 					pDAO.guardarParada(nuevaParada);
 
-					JOptionPane.showMessageDialog(panel,"Error: debe llenar todas las opciones de manera correcta");
+					JOptionPane.showMessageDialog(panel, "Datos guardados con exito!");
 				}
 			}
 		});

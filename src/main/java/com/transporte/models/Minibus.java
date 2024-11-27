@@ -1,22 +1,28 @@
 package com.transporte.models;
 
+import java.util.List;
+
 public class Minibus extends MedioTransporte
 {
-    public Minibus(int id, String nombre)
+    private String numero;
+    private List<String> carteles;
+
+    public Minibus(int id_transporte, String numero, List<String> carteles, List<Tarifa> tarifas)
     {
-        super(id, nombre, "Minibus");
+        super(id_transporte, "Minibus", tarifas);
+        this.numero = numero;
+        this.carteles = carteles;
     }
 
-    /*
-    public List<String> cartelitos(Parada ubicacion)
-    {
-		List<String> cartelitos = new ArrayList<>();
-		return cartelitos;
-	}
-    */
+    public String getNumero() { return numero; }
+    public void setNumero(String numero) { this.numero = numero; }
+
+    public List<String> getCarteles() { return carteles; }
+    public void setCarteles(List<String> carteles) { this.carteles = carteles; }
+
     @Override
     public String getInfoRutas()
     {
-        return "[Minibus]: " + getNombre() + " - Sin parada fija.";
+        return "[Minibus]";
     }
 }

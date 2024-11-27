@@ -15,9 +15,6 @@ public interface ParadaDAOInterface
     // Método para obtener las paradas pertenecientes a una ruta
     List<Parada> obtenerParadaPorId(int rutaId);
 
-    // Método para obtener paradas asociadas a una ruta específica
-    List<Parada> obtenerParadasPorRuta(int rutaId);
-
     // Método para actualizar una parada existente
     void actualizarParada(Parada parada);
 

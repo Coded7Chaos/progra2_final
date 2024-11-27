@@ -11,3 +11,6 @@ CREATE TABLE Rutas (
 
 INSERT INTO Rutas (nombre_inicio, nombre_fin, horario_inicio, horario_fin, estado)
 VALUES ("San Pedro", "Achumani", "06:00", "23:00", 0);
+
+INSERT INTO Rutas (nombre_inicio, nombre_fin, horario_inicio, horario_fin, estado)
+VALUES ("Plaza Camacho", "Chasquipampa", "06:00", "23:00", 0);

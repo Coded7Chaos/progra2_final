@@ -1,15 +1,12 @@
 package com.transporte;
 
-import com.transporte.gui.CrearParada;
-import com.transporte.gui.RouteVisualizer;
-import javax.swing.SwingUtilities;
+import com.transporte.gui.MainWindow;
 
 public class App
 {
     public static void main(String[] args)
     {
-        //CrearParada np = new CrearParada();
-        //np.setVisible(true);
-        SwingUtilities.invokeLater(RouteVisualizer::new);
+        MainWindow np = new MainWindow();
+        np.setVisible(true);
     }
 }

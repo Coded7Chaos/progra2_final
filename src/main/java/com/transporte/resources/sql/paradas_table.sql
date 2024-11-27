@@ -19,3 +19,10 @@ VALUES (1, 1, "San Pedro", -16.503172, -68.132334, "Cañada Stronger", "#32a852"
 
 INSERT INTO Paradas (id_ruta, id_zona, nombre, latitud, longitud, direccion, color, estado)
 VALUES (1, 1, "Campo Verde", -16.507371, -68.052672, "Achumani", "#32a852", 0);
+
+
+INSERT INTO Paradas (id_ruta, id_zona, nombre, latitud, longitud, direccion, color, estado)
+VALUES (2, 3, "Plaza Camacho", -16.500326, -68.13199, "Camacho", "#32a852", 0);
+
+INSERT INTO Paradas (id_ruta, id_zona, nombre, latitud, longitud, direccion, color, estado)
+VALUES (2, 2, "Chasquipampa", -16.53365, -68.037047, "Chasquipampa", "#32a852", 0);

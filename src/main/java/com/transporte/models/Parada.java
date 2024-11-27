@@ -1,19 +1,19 @@
 package com.transporte.models;
 
-
 public class Parada
 {
 	private int idParada;
+    private int idRuta;
 	private String nombre;	
 	private double longitud;
 	private double latitud;
     private String direccion;
 	private String color;
-	private com.transporte.models.Zona zona;
+	private Zona zona;
 	private boolean estado;
 
 
-	public Parada(String nombre, double longitud, double latitud, String direccion, com.transporte.models.Zona zona)
+	public Parada(String nombre, double longitud, double latitud, String direccion, Zona zona)
     {
         this.nombre     = nombre;
         this.longitud   = longitud;
@@ -22,9 +22,10 @@ public class Parada
         this.zona       = zona;
     }
 
-    public Parada(int id, String nombre, double longitud, double latitud, String direccion, String color ,com.transporte.models.Zona zona, boolean estado)
+    public Parada(int idParada, int idRuta, String nombre, double longitud, double latitud, String direccion, String color, Zona zona, boolean estado)
     {
-        this.idParada   = id;
+        this.idParada   = idParada;
+        this.idRuta     = idRuta;
         this.nombre     = nombre;
         this.longitud   = longitud;
         this.latitud    = latitud;
@@ -37,6 +38,9 @@ public class Parada
 
 	public int getIdParada() { return idParada; }
     public void setIdParada(int idParada) { this.idParada = idParada; }
+
+    public int getIdRuta() { return idRuta; }
+    public void setIdRuta(int idRuta) { this.idRuta = idRuta; }
 
     public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }
@@ -53,8 +57,8 @@ public class Parada
     public String getColor() { return color; }
     public void setColor(String color) { this.color = color; }
 
-    public com.transporte.models.Zona getZona() { return zona; }
-    public void setZona(com.transporte.models.Zona zona) { this.zona = zona; }
+    public Zona getZona() { return zona; }
+    public void setZona(Zona zona) { this.zona = zona; }
 
     public boolean isEstado() { return estado; }
     public void setEstado(boolean estado) { this.estado = estado; }

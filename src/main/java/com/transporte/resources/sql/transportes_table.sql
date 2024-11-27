@@ -10,3 +10,6 @@ CREATE TABLE Transportes (
 
 INSERT INTO Transportes (id_ruta, nombre, tipo)
 VALUES (1, "San Pedro - Achumani", "Pumakatari");
+
+INSERT INTO Transportes (id_ruta, nombre, tipo)
+VALUES (2, "Plaza Camacho - Chasquipampa", "Pumakatari");

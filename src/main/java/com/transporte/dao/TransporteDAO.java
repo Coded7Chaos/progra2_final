@@ -12,42 +12,9 @@ import com.transporte.models.Teleferico;
 
 public class TransporteDAO
 {
-    public List<MedioTransporte> obtenerTransportes()
-    {
-        List<MedioTransporte> transportes = new ArrayList<>();
-        try (Connection conn = DatabaseConnection.getConnection();
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * FROM Transporte"))
-        {
-
-            while (rs.next())
-            {
-                int id = rs.getInt("id");
-                String nombre = rs.getString("nombre");
-                String tipo = rs.getString("tipo");
-
-                if ("Minibus".equals(tipo))
-                {
-                    transportes.add(new Minibus(id, nombre));
-                }
-                else if ("Pumakatari".equals(tipo))
-                {
-                    transportes.add(new Pumakatari(id, nombre));
-                }
-                else if ("Teleferico".equals(tipo))
-                {
-                    transportes.add(new Teleferico(id, nombre));
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return transportes;
-    }
-
     public MedioTransporte obtenerTransportePorRuta(int id)
     {
-        MedioTransporte transporte = new Minibus(0, "Ruta generica");
+        MedioTransporte transporte = new Minibus(0, "000", new ArrayList<>(), new ArrayList<>());
 
         try (Connection conn = DatabaseConnection.getConnection();
                 PreparedStatement ps = conn.prepareStatement("SELECT id_transporte, nombre, tipo FROM Transportes WHERE id_ruta = ?"))
@@ -62,11 +29,11 @@ public class TransporteDAO
 
                 if ("Minibus".equals(tipo))
                 {
-                    transporte = new Minibus(id_transporte, nombre);
+                    transporte = new Minibus(id_transporte, nombre, new ArrayList<>(), new ArrayList<>());
                 }
                 else if ("Pumakatari".equals(tipo))
                 {
-                    transporte = new Pumakatari(id_transporte, nombre);
+                    transporte = new Pumakatari(id_transporte, new ArrayList<>());
                 }
                 else if ("Teleferico".equals(tipo))
                 {

@@ -7,3 +7,9 @@ CREATE TABLE Zonas (
 
 INSERT INTO Zonas (nombre)
 VALUES ("San Pedro");
+
+INSERT INTO Zonas (nombre)
+VALUES ("Zona Sur");
+
+INSERT INTO Zonas (nombre)
+VALUES ("Camacho");

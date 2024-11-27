@@ -14,8 +14,8 @@ public class ZonaDAO
 	    List<Zona> zonas = new ArrayList<>();
 
 	    String query = """
-            SELECT id, nombre
-            FROM zona
+            SELECT id_zona, nombre
+            FROM Zonas
             """;
 
 	    try (Connection conn = DatabaseConnection.getConnection();
@@ -24,11 +24,11 @@ public class ZonaDAO
         {
 	    	while (rs.next())
             {
-	    		int id			= rs.getInt("id");
+	    		int id_zona		= rs.getInt("id_zona");
 	    		String nombre	= rs.getString("nombre");
 	    		
 	    		// Crear el objeto Zona
-	    		Zona zona = new Zona(id, nombre);
+	    		Zona zona = new Zona(id_zona, nombre);
                 
 	    		// Agregar a la lista
 	    		zonas.add(zona);
@@ -46,9 +46,9 @@ public class ZonaDAO
     {
 		Zona zona = null;
 		String query = """
-    	    SELECT id, nombre
-    	    FROM zona
-			WHERE id = ?
+    	    SELECT id_zona, nombre
+    	    FROM Zonas
+			WHERE id_zona = ?
     	    """;
 		try (Connection conn = DatabaseConnection.getConnection();
 	        PreparedStatement stmt = conn.prepareStatement(query))
@@ -58,7 +58,7 @@ public class ZonaDAO
 			{
 				if (rs.next())
 				{
-					int id			= rs.getInt("id");
+					int id			= rs.getInt("id_zona");
 					String nombre	= rs.getString("nombre");
 					
 					// Crear el objeto Zona
@@ -66,7 +66,7 @@ public class ZonaDAO
 				}
 				else
 				{
-					System.out.print("No existe una zona con el id proporcionado");
+					System.out.println("No existe una zona con el id proporcionado");
 				}
 			}
 		} catch (SQLException e) {
