@@ -1,7 +1,22 @@
 package com.transporte.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.List;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import org.jxmapviewer.JXMapViewer;
@@ -9,21 +24,12 @@ import org.jxmapviewer.OSMTileFactoryInfo;
 import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.GeoPosition;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-import javax.swing.*;
-import java.util.List;
 import com.transporte.dao.ParadaDAO;
 import com.transporte.dao.ZonaDAO;
-import com.transporte.utils.Fonts;
 import com.transporte.models.Parada;
-import com.transporte.models.Zona;
 import com.transporte.models.Ruta;
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
+import com.transporte.models.Zona;
+import com.transporte.utils.Fonts;
 
 public class CrearParada extends JFrame
 {
@@ -163,7 +169,7 @@ public class CrearParada extends JFrame
 			@Override
             public void actionPerformed(ActionEvent e)
 			{
-                if(latitud.getText()==null || longitud.getText()==null || nombreParada.getText()==null)
+                if(latitud.getText() == null || longitud.getText() == null || nombreParada.getText() == null)
 				{
 					JOptionPane.showMessageDialog(panel, "Error: debe llenar todas las opciones de manera correcta");
 				} 
@@ -172,6 +178,7 @@ public class CrearParada extends JFrame
 					int index = comboBoxRutas.getSelectedIndex();
 					Parada nuevaParada = new Parada(rutas.get(index).getId(), nombreParada.getText(), latitude, longitude, direccionParada.getText(), (Zona)comboBox.getSelectedItem());
 					pDAO.guardarParada(nuevaParada);
+					rutas.get(index).insertParada(nuevaParada);
 
 					JOptionPane.showMessageDialog(panel, "Datos guardados con exito!");
 				}

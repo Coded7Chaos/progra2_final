@@ -48,4 +48,5 @@ public class Ruta
 
     public List<Parada> getParadas() { return paradas; }
     public void setParadas(List<Parada> paradas) { this.paradas = paradas; }
+    public void insertParada(Parada parada) { this.paradas.add(parada); }
 }
