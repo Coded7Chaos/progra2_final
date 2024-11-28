@@ -13,7 +13,7 @@ import com.transporte.models.Parada;
 public class ParadaDAO implements ParadaDAOInterface
 {
     @Override
-    public void guardarParada(Parada parada)
+    public void guardarParada(Parada parada) throws SQLException
     {
         try (Connection conn = DatabaseConnection.getConnection();
 	            PreparedStatement stmt = conn.prepareStatement("INSERT INTO Paradas (id_ruta, id_zona, nombre, latitud, longitud, direccion, color, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"))
@@ -33,7 +33,7 @@ public class ParadaDAO implements ParadaDAOInterface
 
         } catch (SQLException e) {
 		    e.printStackTrace();
-            System.err.println("Error al guardar la parada: " + e.getMessage());
+            throw e;
 	    }
     }
 

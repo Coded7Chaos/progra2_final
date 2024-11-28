@@ -1,5 +1,6 @@
 package com.transporte.dao;
  
+import java.sql.SQLException;
 import java.util.List;
 
 import com.transporte.models.Parada;
@@ -7,7 +8,7 @@ import com.transporte.models.Parada;
 public interface ParadaDAOInterface
 {
     // Método para guardar una nueva parada en la base de datos
-    void guardarParada(Parada parada);
+    void guardarParada(Parada parada) throws SQLException;
 
     // Método para obtener todas las paradas
     List<Parada> obtenerParadas();

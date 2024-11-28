@@ -22,6 +22,16 @@ public class Parada
         this.direccion  = direccion;
         this.zona       = zona;
     }
+    
+	public Parada(String nombre, double latitud, double longitud, String direccion, Zona zona, int idRuta)
+    {
+        this.nombre     = nombre;
+        this.latitud    = latitud;
+        this.longitud   = longitud;
+        this.direccion  = direccion;
+        this.zona       = zona;
+        this.idRuta = idRuta;
+    }
 
     public Parada(int idParada, int idRuta, String nombre, double latitud, double longitud, String direccion, String color, Zona zona, boolean estado)
     {
