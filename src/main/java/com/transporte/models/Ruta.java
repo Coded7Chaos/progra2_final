@@ -1,11 +1,7 @@
 package com.transporte.models;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
-
-import com.transporte.config.DatabaseConnection;
 
 public abstract class Ruta
 {
@@ -21,6 +17,17 @@ public abstract class Ruta
     private List<Parada> paradas;
 
     public Ruta() {}
+    public Ruta(String nombreInicio, String nombreFin, String horarioInicio, String horarioFin, int estado, int tipo_transporte, List<Tarifa> tarifas, List<Parada> paradas)
+    {
+        this.nombreInicio = nombreInicio;
+        this.nombreFin = nombreFin;
+        this.horarioInicio = horarioInicio;
+        this.horarioFin = horarioFin;
+        this.estado = estado;
+        this.tipo_transporte = tipo_transporte;
+        this.tarifas = tarifas;
+        this.paradas = paradas;
+    }
     public Ruta(int id_ruta, String nombreInicio, String nombreFin, String horarioInicio, String horarioFin, int estado, int tipo_transporte, List<Tarifa> tarifas, List<Parada> paradas)
     {
         this.id_ruta = id_ruta;

@@ -26,13 +26,13 @@ public class MainWindow extends JFrame
 {
     private JComboBox<String> comboBoxRutas;
     private JXMapViewer mapViewer;
-    private JButton btnAgregar, btnModificar, btnEliminar, btnMasInformacion;
+    private JButton btnAgregar, btnCrear, btnMasInformacion;
     private List<Ruta> rutas;
 
     public MainWindow()
     {
         setTitle("Visualizar Rutas y Paradas");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 1000, 600);
         setLayout(new BorderLayout(10, 10));
 
@@ -79,21 +79,21 @@ public class MainWindow extends JFrame
         bottomPanel.setBackground(new Color(240, 240, 240));
         add(bottomPanel, BorderLayout.SOUTH);
 
-        btnAgregar = new JButton("Agregar");
+        btnCrear = new JButton("Crear Ruta");
+        btnCrear.setFont(new Font("Arial", Font.PLAIN, 14));
+        btnCrear.setBackground(new Color(255, 153, 51));
+        btnCrear.setForeground(Color.WHITE);
+        btnCrear.setFocusPainted(false);
+        bottomPanel.add(btnCrear);
+
+        btnAgregar = new JButton("Agregar Parada");
         btnAgregar.setFont(new Font("Arial", Font.PLAIN, 14));
         btnAgregar.setBackground(new Color(0, 153, 76));
         btnAgregar.setForeground(Color.WHITE);
         btnAgregar.setFocusPainted(false);
         bottomPanel.add(btnAgregar);
 
-        /*btnModificar = new JButton("Modificar");
-        btnModificar.setFont(new Font("Arial", Font.PLAIN, 14));
-        btnModificar.setBackground(new Color(255, 153, 51));
-        btnModificar.setForeground(Color.WHITE);
-        btnModificar.setFocusPainted(false);
-        bottomPanel.add(btnModificar);
-
-        btnEliminar = new JButton("Eliminar");
+        /*btnEliminar = new JButton("Eliminar");
         btnEliminar.setFont(new Font("Arial", Font.PLAIN, 14));
         btnEliminar.setBackground(new Color(204, 51, 51));
         btnEliminar.setForeground(Color.WHITE);
@@ -110,6 +110,11 @@ public class MainWindow extends JFrame
 
         btnMasInformacion.addActionListener(e -> {
             InformationWindow np = new InformationWindow(rutas.get(comboBoxRutas.getSelectedIndex()));
+            np.setVisible(true);
+        });
+
+        btnCrear.addActionListener(e -> {
+            CrearRuta np = new CrearRuta();
             np.setVisible(true);
         });
 

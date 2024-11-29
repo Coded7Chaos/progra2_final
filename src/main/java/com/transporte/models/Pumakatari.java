@@ -3,6 +3,7 @@ package com.transporte.models;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.transporte.config.DatabaseConnection;
@@ -12,6 +13,10 @@ public class Pumakatari extends Ruta
     private String nombreTransporte;
 
     public Pumakatari() {}
+    public Pumakatari(String nombreInicio, String nombreFin, String horarioInicio, String horarioFin, int estado)
+    {
+        super(nombreInicio, nombreFin, horarioInicio, horarioFin, estado, 2, new ArrayList<>(), new ArrayList<>());
+    }
     public Pumakatari(int id_ruta, String nombreInicio, String nombreFin, String horarioInicio, String horarioFin, int estado, List<Tarifa> tarifas, List<Parada> paradas)
     {
         super(id_ruta, nombreInicio, nombreFin, horarioInicio, horarioFin, estado, 2, tarifas, paradas);

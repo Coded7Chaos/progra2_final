@@ -6,3 +6,6 @@ CREATE TABLE Lineas (
     PRIMARY KEY (id_linea),
     FOREIGN KEY (id_ruta) REFERENCES Rutas(id_ruta)
 );
+
+
+INSERT INTO Lineas (id_ruta, nombre) VALUES (1, "Roja");
