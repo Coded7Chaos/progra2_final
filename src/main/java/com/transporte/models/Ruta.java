@@ -61,85 +61,12 @@ public abstract class Ruta
     public List<Parada> getParadas() { return paradas; }
     public void setParadas(List<Parada> paradas) { this.paradas = paradas; }
 
-    public String getNombreTransporte()
-    {
-        switch (tipo_transporte) {
-            case 1:
-                return "Minibus";
-
-            case 2:
-                return "Pumakatari";
-            
-            case 3:
-                return "Teleferico";
-                
-            default:
-                return "Desconocido";
-        }
-    }
     public void insertParada(Parada parada) { this.paradas.add(parada); }
 
+    public abstract String getNombreTransporte();
     public abstract String getInfo();
 
-    public void guardarRuta() throws SQLException
-    {
-        try (Connection conn = DatabaseConnection.getConnection();
-	            PreparedStatement stmt = conn.prepareStatement("INSERT INTO Rutas (nombre_inicio, nombre_fin, horario_inicio, horario_fin, tipo_transporte, estado) VALUES (?, ?, ?, ?, ?, ?)"))
-        {
-            stmt.setString(1, nombreInicio);
-            stmt.setString(2, nombreFin);
-            stmt.setString(3, horarioInicio);
-            stmt.setString(4, horarioFin);
-            stmt.setInt(5, tipo_transporte);
-            stmt.setInt(6, estado);
-
-		    int filasAfectadas = stmt.executeUpdate();
-		    if (filasAfectadas > 0)
-                System.out.println("Ruta guardada exitosamente.");
-
-        } catch (SQLException e) {
-		    e.printStackTrace();
-            throw e;
-	    }
-    }
-
-    public void actualizarRuta(String nombreInicio, String nombreFin, String horarioInicio, String horarioFin, int tipo_transporte, int estado) throws SQLException
-    {   
-        try (Connection conn = DatabaseConnection.getConnection();
-	            PreparedStatement stmt = conn.prepareStatement("UPDATE Rutas SET nombre_inicio = ?, nombre_fin = ?, horario_inicio = ?, horario_fin = ?, tipo_transporte = ?, estado = ? WHERE id_ruta = ?"))
-        {
-            stmt.setString(1, nombreInicio);
-            stmt.setString(2, nombreFin);
-            stmt.setString(3, horarioInicio);
-            stmt.setString(4, horarioFin);
-            stmt.setInt(5, tipo_transporte);
-            stmt.setInt(6, estado);
-            stmt.setInt(7, id_ruta);
-
-            int filasAfectadas = stmt.executeUpdate();
-		    if (filasAfectadas > 0)
-                System.out.println("Parada actualizada exitosamente.");
-                
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw e;
-        }
-    }
-
-    public void eliminarRuta() throws SQLException
-    {
-        try (Connection conn = DatabaseConnection.getConnection();
-	            PreparedStatement stmt = conn.prepareStatement("DELETE FROM Rutas WHERE id_ruta = ?"))
-        {
-            stmt.setInt(1, id_ruta);
-
-            int filasAfectadas = stmt.executeUpdate();
-		    if (filasAfectadas > 0)
-                System.out.println("Parada actualizada exitosamente.");
-                
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw e;
-        }
-    }
+    public abstract void guardarRuta() throws SQLException;
+    public abstract void actualizarRuta() throws SQLException;
+    public abstract void eliminarRuta() throws SQLException;
 }

@@ -40,7 +40,7 @@ public class RutaDAO
                 switch (tipo_transporte)
                 {
                     case 1:
-                        rutas.add(new Minibus(id_ruta, nombre_inicio, nombre_fin, horario_inicio, horario_fin, estado, tarifas, paradas, "965", CartelDAO.obtenerCartelesPorRuta(id_ruta)));
+                        rutas.add(new Minibus(id_ruta, nombre_inicio, nombre_fin, horario_inicio, horario_fin, estado, tarifas, paradas, RutaNumeroDAO.obtenerNumeroPorRuta(id_ruta), CartelDAO.obtenerCartelesPorRuta(id_ruta)));
                         break;
                 
                     case 2:
@@ -48,7 +48,7 @@ public class RutaDAO
                         break;
 
                     case 3:
-                        rutas.add(new Teleferico(id_ruta, nombre_inicio, nombre_fin, horario_inicio, horario_fin, estado, tarifas, paradas, "Roja"));
+                        rutas.add(new Teleferico(id_ruta, nombre_inicio, nombre_fin, horario_inicio, horario_fin, estado, tarifas, paradas, LineaDAO.obtenerLineaPorRuta(id_ruta)));
                         break;
 
                     default:
@@ -88,7 +88,7 @@ public class RutaDAO
                 switch (tipo_transporte)
                 {
                     case 1:
-                        route = new Minibus(id_ruta, nombre_inicio, nombre_fin, horario_inicio, horario_fin, estado, tarifas, paradas, "965", CartelDAO.obtenerCartelesPorRuta(id_ruta));
+                        route = new Minibus(id_ruta, nombre_inicio, nombre_fin, horario_inicio, horario_fin, estado, tarifas, paradas, RutaNumeroDAO.obtenerNumeroPorRuta(id_ruta), CartelDAO.obtenerCartelesPorRuta(id_ruta));
                         break;
                 
                     case 2:
@@ -96,7 +96,7 @@ public class RutaDAO
                         break;
 
                     case 3:
-                        route = new Teleferico(id_ruta, nombre_inicio, nombre_fin, horario_inicio, horario_fin, estado, tarifas, paradas, "Roja");
+                        route = new Teleferico(id_ruta, nombre_inicio, nombre_fin, horario_inicio, horario_fin, estado, tarifas, paradas, LineaDAO.obtenerLineaPorRuta(id_ruta));
                         break;
 
                     default:
