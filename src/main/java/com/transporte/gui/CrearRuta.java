@@ -28,7 +28,7 @@ public class CrearRuta extends JFrame
     private JTextField txtNuevoCartel;
     private JButton btnCrearRuta;
 
-    public CrearRuta()
+    public CrearRuta(List<Ruta> rutas, JComboBox<String> comboBoxRutas)
     {
         setTitle("Formulario de Transporte Público");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -144,6 +144,8 @@ public class CrearRuta extends JFrame
                 case 0:
                     String numeroRuta = txtNumeroRuta.getText();
                     Ruta mini = new Minibus(nombreInicio, nombreFin, horarioInicio, horarioFin, estado, numeroRuta, carteles);
+                    rutas.add(mini);
+                    comboBoxRutas.addItem(String.format("%s - %s", nombreInicio, nombreFin));
                     try
                     {
                         mini.guardarRuta();
@@ -155,6 +157,8 @@ public class CrearRuta extends JFrame
             
                 case 1:
                     Ruta puma = new Pumakatari(nombreInicio, nombreFin, horarioInicio, horarioFin, estado);
+                    rutas.add(puma);
+                    comboBoxRutas.addItem(String.format("%s - %s", nombreInicio, nombreFin));
                     try
                     {
                         puma.guardarRuta();
@@ -166,6 +170,8 @@ public class CrearRuta extends JFrame
                 case 2:
                     String nombreLinea = txtNombreLinea.getText();
                     Ruta tele = new Teleferico(nombreInicio, nombreFin, horarioInicio, horarioFin, estado, nombreLinea);
+                    rutas.add(tele);
+                    comboBoxRutas.addItem(String.format("%s - %s", nombreInicio, nombreFin));
                     try
                     {
                         tele.guardarRuta();

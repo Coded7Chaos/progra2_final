@@ -197,6 +197,7 @@ public class CrearParada extends JFrame
 					FieldValidator.validateField(zonaSeleccionada.getNombre());
 
 					Parada nuevaParada = new Parada(rutas.get(comboBoxRutas.getSelectedIndex()).getId(), nombreParada.getText(), latitude, longitude, direccionParada.getText(), zonaSeleccionada);
+					rutas.get(comboBoxRutas.getSelectedIndex()).insertParada(nuevaParada);
 					try
 					{
 						nuevaParada.guardarParada();

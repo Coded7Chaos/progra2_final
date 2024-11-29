@@ -114,7 +114,7 @@ public class MainWindow extends JFrame
         });
 
         btnCrear.addActionListener(e -> {
-            CrearRuta np = new CrearRuta();
+            CrearRuta np = new CrearRuta(rutas, comboBoxRutas);
             np.setVisible(true);
         });
 
