@@ -2,7 +2,7 @@ CREATE TABLE Paradas (
     id_parada INT NOT NULL AUTO_INCREMENT,
     id_ruta INT NOT NULL,
     id_zona INT NOT NULL,
-    nombre VARCHAR(20) NOT NULL,
+    nombre VARCHAR(30) NOT NULL,
     latitud DECIMAL(10, 8) NOT NULL,
     longitud DECIMAL(10, 8) NOT NULL,
     direccion VARCHAR(30),
@@ -15,14 +15,14 @@ CREATE TABLE Paradas (
 );
 
 INSERT INTO Paradas (id_ruta, id_zona, nombre, latitud, longitud, direccion, color, estado)
-VALUES (1, 1, "San Pedro", -16.503172, -68.132334, "Cañada Stronger", "#32a852", 0);
+VALUES (1, 2, "14 de Septiembre", -16.533629, -68.036591, "Av. Muñoz Reyes", "#32a852", 1);
 
 INSERT INTO Paradas (id_ruta, id_zona, nombre, latitud, longitud, direccion, color, estado)
-VALUES (1, 1, "Campo Verde", -16.507371, -68.052672, "Achumani", "#32a852", 0);
+VALUES (1, 1, "Av Apumalla", -16.493260, -68.150589, "Peñas", "#32a852", 1);
 
 
 INSERT INTO Paradas (id_ruta, id_zona, nombre, latitud, longitud, direccion, color, estado)
-VALUES (2, 3, "Plaza Camacho", -16.500326, -68.13199, "Camacho", "#32a852", 0);
+VALUES (2, 2, "Irpavi", -16.538047, -68.087406, "Av. Fuerza Naval", "#32a852", 1);
 
 INSERT INTO Paradas (id_ruta, id_zona, nombre, latitud, longitud, direccion, color, estado)
-VALUES (2, 2, "Chasquipampa", -16.53365, -68.037047, "Chasquipampa", "#32a852", 0);
+VALUES (2, 2, "Libertador", -16.518652, -68.116151, "Curva de Holguin", "#32a852", 1);

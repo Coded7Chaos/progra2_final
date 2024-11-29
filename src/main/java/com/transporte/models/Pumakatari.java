@@ -2,7 +2,9 @@ package com.transporte.models;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +22,7 @@ public class Pumakatari extends Ruta
     public Pumakatari(int id_ruta, String nombreInicio, String nombreFin, String horarioInicio, String horarioFin, int estado, List<Tarifa> tarifas, List<Parada> paradas)
     {
         super(id_ruta, nombreInicio, nombreFin, horarioInicio, horarioFin, estado, 2, tarifas, paradas);
-        this.nombreTransporte = "PumaKatari";
+        this.nombreTransporte = "Pumakatari";
     }
 
     @Override
@@ -38,7 +40,7 @@ public class Pumakatari extends Ruta
     public void guardarRuta() throws SQLException
     {
         try (Connection conn = DatabaseConnection.getConnection();
-	            PreparedStatement stmt = conn.prepareStatement("INSERT INTO Rutas (nombre_inicio, nombre_fin, horario_inicio, horario_fin, tipo_transporte, estado) VALUES (?, ?, ?, ?, ?, ?)"))
+	            PreparedStatement stmt = conn.prepareStatement("INSERT INTO Rutas (nombre_inicio, nombre_fin, horario_inicio, horario_fin, tipo_transporte, estado) VALUES (?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS))
         {
             stmt.setString(1, getNombreInicio());
             stmt.setString(2, getNombreFin());
@@ -47,7 +49,15 @@ public class Pumakatari extends Ruta
             stmt.setInt(5, getTipoTransporte());
             stmt.setInt(6, getEstado());
 
-		    int filasAfectadas = stmt.executeUpdate();
+            int filasAfectadas = stmt.executeUpdate();
+            
+            int idRutaGenerado = -1;
+            ResultSet generatedKeys = stmt.getGeneratedKeys();
+            if (generatedKeys.next())
+                idRutaGenerado = generatedKeys.getInt(1);
+
+            setId(idRutaGenerado);
+
 		    if (filasAfectadas > 0)
                 System.out.println("Ruta guardada exitosamente.");
 

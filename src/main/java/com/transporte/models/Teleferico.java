@@ -63,6 +63,8 @@ public class Teleferico extends Ruta
             if (generatedKeys.next())
                 idRutaGenerado = generatedKeys.getInt(1);
 
+            setId(idRutaGenerado);
+
             PreparedStatement stmt2 = conn.prepareStatement("INSERT INTO Lineas (id_ruta, nombre) VALUES (?, ?)");
             stmt2.setInt(1, idRutaGenerado);
             stmt2.setString(2, linea);

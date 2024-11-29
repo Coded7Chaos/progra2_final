@@ -144,24 +144,23 @@ public class CrearRuta extends JFrame
                 case 0:
                     String numeroRuta = txtNumeroRuta.getText();
                     Ruta mini = new Minibus(nombreInicio, nombreFin, horarioInicio, horarioFin, estado, numeroRuta, carteles);
-                    rutas.add(mini);
                     comboBoxRutas.addItem(String.format("%s - %s", nombreInicio, nombreFin));
                     try
                     {
                         mini.guardarRuta();
+                        rutas.add(mini);
                     } catch (SQLException error) {
                         error.printStackTrace();
                     }
-                    
                     break;
             
                 case 1:
                     Ruta puma = new Pumakatari(nombreInicio, nombreFin, horarioInicio, horarioFin, estado);
-                    rutas.add(puma);
                     comboBoxRutas.addItem(String.format("%s - %s", nombreInicio, nombreFin));
                     try
                     {
                         puma.guardarRuta();
+                        rutas.add(puma);
                     } catch (SQLException error) {
                         error.printStackTrace();
                     }
@@ -170,11 +169,11 @@ public class CrearRuta extends JFrame
                 case 2:
                     String nombreLinea = txtNombreLinea.getText();
                     Ruta tele = new Teleferico(nombreInicio, nombreFin, horarioInicio, horarioFin, estado, nombreLinea);
-                    rutas.add(tele);
                     comboBoxRutas.addItem(String.format("%s - %s", nombreInicio, nombreFin));
                     try
                     {
                         tele.guardarRuta();
+                        rutas.add(tele);
                     } catch (SQLException error) {
                         error.printStackTrace();
                     }

@@ -1,7 +1,7 @@
 CREATE TABLE Carteles (
     id_cartel INT NOT NULL AUTO_INCREMENT,
     id_ruta INT,
-    nombre VARCHAR(20),
+    nombre VARCHAR(30),
     
     PRIMARY KEY (id_cartel),
     FOREIGN KEY (id_ruta) REFERENCES Rutas(id_ruta)

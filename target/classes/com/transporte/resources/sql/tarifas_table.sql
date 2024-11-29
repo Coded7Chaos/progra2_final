@@ -18,4 +18,4 @@ INSERT INTO Tarifas (id_ruta, nombre, costo)
 VALUES (2, "Regular", 2.0);
 
 INSERT INTO Tarifas (id_ruta, nombre, costo)
-VALUES (2, "Tercera edad", 1.8);
+VALUES (2, "Preferencial", 1.5);

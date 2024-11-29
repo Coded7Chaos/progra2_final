@@ -8,4 +8,4 @@ CREATE TABLE Lineas (
 );
 
 
-INSERT INTO Lineas (id_ruta, nombre) VALUES (1, "Roja");
+INSERT INTO Lineas (id_ruta, nombre) VALUES (2, "Verde");

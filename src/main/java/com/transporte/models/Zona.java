@@ -20,6 +20,6 @@ public class Zona
 	@Override
     public String toString()
 	{
-        return nombre;  // Solo el nombre es lo que se mostrará
+        return nombre;
     }
 }
