@@ -1,5 +1,11 @@
 package com.transporte.models;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import com.transporte.config.DatabaseConnection;
+
 public class Parada
 {
 	private int idParada;
@@ -22,16 +28,6 @@ public class Parada
         this.direccion  = direccion;
         this.zona       = zona;
     }
-    
-	public Parada(String nombre, double latitud, double longitud, String direccion, Zona zona, int idRuta)
-    {
-        this.nombre     = nombre;
-        this.latitud    = latitud;
-        this.longitud   = longitud;
-        this.direccion  = direccion;
-        this.zona       = zona;
-        this.idRuta = idRuta;
-    }
 
     public Parada(int idParada, int idRuta, String nombre, double latitud, double longitud, String direccion, String color, Zona zona, boolean estado)
     {
@@ -44,7 +40,7 @@ public class Parada
         this.color      = color;
         this.zona       = zona;
         this.estado     = estado;
-		this.color      = color != null ? color : "#FFFFFF"; // Color amarillo por defecto
+		this.color      = color != null ? color : "#FFFFFF";
     }
 
 	public int getIdParada() { return idParada; }
@@ -73,6 +69,72 @@ public class Parada
 
     public boolean isEstado() { return estado; }
     public void setEstado(boolean estado) { this.estado = estado; }
+
+    public void guardarParada() throws SQLException
+    {
+        try (Connection conn = DatabaseConnection.getConnection();
+	            PreparedStatement stmt = conn.prepareStatement("INSERT INTO Paradas (id_ruta, id_zona, nombre, latitud, longitud, direccion, color, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"))
+        {
+            stmt.setInt(1, idRuta);
+            stmt.setInt(2, zona.getIdZona());
+            stmt.setString(3, nombre);
+            stmt.setDouble(4, latitud);
+            stmt.setDouble(5, longitud);
+            stmt.setString(6, direccion);
+            stmt.setString(7, color == null ? "#FFFFFF" : color);
+            stmt.setBoolean(8, false);
+
+		    int filasAfectadas = stmt.executeUpdate();
+		    if (filasAfectadas > 0)
+                System.out.println("Parada guardada exitosamente.");
+
+        } catch (SQLException e) {
+		    e.printStackTrace();
+            throw e;
+	    }
+    }
+
+    public void actualizarParada(int idRuta, String nombre, double latitud, double longitud, String direccion, Zona zona) throws SQLException
+    {   
+        try (Connection conn = DatabaseConnection.getConnection();
+	            PreparedStatement stmt = conn.prepareStatement("UPDATE Paradas SET id_ruta = ?, id_zona = ?, nombre = ?, latitud = ?, longitud = ?, direccion = ?, color = ?, estado = ? WHERE id_parada = ?"))
+        {
+            stmt.setInt(1, idRuta);
+            stmt.setInt(2, zona.getIdZona());
+            stmt.setString(3, nombre);
+            stmt.setDouble(4, latitud);
+            stmt.setDouble(5, longitud);
+            stmt.setString(6, direccion);
+            stmt.setString(7, color == null ? "#FFFFFF" : color);
+            stmt.setBoolean(8, false);
+            stmt.setInt(9, idParada);
+
+            int filasAfectadas = stmt.executeUpdate();
+		    if (filasAfectadas > 0)
+                System.out.println("Parada actualizada exitosamente.");
+                
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public void eliminarParada() throws SQLException
+    {
+        try (Connection conn = DatabaseConnection.getConnection();
+	            PreparedStatement stmt = conn.prepareStatement("DELETE FROM Paradas WHERE id_parada = ?"))
+        {
+            stmt.setInt(1, idParada);
+
+            int filasAfectadas = stmt.executeUpdate();
+		    if (filasAfectadas > 0)
+                System.out.println("Parada actualizada exitosamente.");
+                
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
 
     @Override
     public String toString()

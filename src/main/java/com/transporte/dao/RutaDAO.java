@@ -5,19 +5,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.transporte.config.DatabaseConnection;
-import com.transporte.models.MedioTransporte;
-import com.transporte.models.Parada;
 import com.transporte.models.Ruta;
+import com.transporte.models.Teleferico;
+import com.transporte.models.Minibus;
+import com.transporte.models.Parada;
+import com.transporte.models.Pumakatari;
+import com.transporte.models.Tarifa;
 
 public class RutaDAO
 {
-    public List<Ruta> obtenerRutas()
+    public static List<Ruta> obtenerRutas() throws SQLException
     {
         List<Ruta> rutas = new ArrayList<>();
 
         try (Connection conn = DatabaseConnection.getConnection();
                 Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT id_ruta, nombre_inicio, nombre_fin, horario_inicio, horario_fin, estado FROM Rutas"))
+                ResultSet rs = stmt.executeQuery("SELECT id_ruta, nombre_inicio, nombre_fin, horario_inicio, horario_fin, tipo_transporte, estado FROM Rutas"))
         {
             while (rs.next())
             {
@@ -26,27 +29,44 @@ public class RutaDAO
                 String nombre_fin       = rs.getString("nombre_fin");
                 String horario_inicio   = rs.getString("horario_inicio");
                 String horario_fin      = rs.getString("horario_fin");
+                int tipo_transporte     = rs.getInt("tipo_transporte");
                 int estado              = rs.getInt("estado");
-
-                TransporteDAO tdao = new TransporteDAO();
-                MedioTransporte transporte = tdao.obtenerTransportePorRuta(id_ruta);
 
                 ParadaDAO pdao = new ParadaDAO();
                 List<Parada> paradas = pdao.obtenerParadaPorId(id_ruta);
 
-                rutas.add(new Ruta(id_ruta, nombre_inicio, nombre_fin, horario_inicio, horario_fin, estado, transporte, paradas));
+                List<Tarifa> tarifas = TarifaDAO.obtenerTarifasPorRuta(id_ruta);
+
+                switch (tipo_transporte)
+                {
+                    case 1:
+                        rutas.add(new Minibus(id_ruta, nombre_inicio, nombre_fin, horario_inicio, horario_fin, estado, tarifas, paradas, "965", CartelDAO.obtenerCartelesPorRuta(id_ruta)));
+                        break;
+                
+                    case 2:
+                        rutas.add(new Pumakatari(id_ruta, nombre_inicio, nombre_fin, horario_inicio, horario_fin, estado, tarifas, paradas));
+                        break;
+
+                    case 3:
+                        rutas.add(new Teleferico(id_ruta, nombre_inicio, nombre_fin, horario_inicio, horario_fin, estado, tarifas, paradas, "Roja"));
+                        break;
+
+                    default:
+                        break;
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            throw e;
         }
 
         return rutas;
     }
-    public Ruta obtenerRutaPorId(int id)
+    public static Ruta obtenerRutaPorId(int id) throws SQLException
     {
-        Ruta route = new Ruta(id, null, null, null, null, 0, null, null);
+        Ruta route = new Pumakatari();
         try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement ps = conn.prepareStatement("SELECT id_ruta, nombre_inicio, nombre_fin, horario_inicio, horario_fin, estado FROM Rutas WHERE id_ruta = ?"))
+                PreparedStatement ps = conn.prepareStatement("SELECT id_ruta, nombre_inicio, nombre_fin, horario_inicio, horario_fin, tipo_transporte, estado FROM Rutas WHERE id_ruta = ?"))
         {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
@@ -57,18 +77,35 @@ public class RutaDAO
                 String nombre_fin       = rs.getString("nombre_fin");
                 String horario_inicio   = rs.getString("horario_inicio");
                 String horario_fin      = rs.getString("horario_fin");
+                int tipo_transporte     = rs.getInt("tipo_transporte");
                 int estado              = rs.getInt("estado");
-
-                TransporteDAO tdao = new TransporteDAO();
-                MedioTransporte transporte = tdao.obtenerTransportePorRuta(id_ruta);
 
                 ParadaDAO pdao = new ParadaDAO();
                 List<Parada> paradas = pdao.obtenerParadaPorId(id_ruta);
 
-                route = new Ruta(id_ruta, nombre_inicio, nombre_fin, horario_inicio, horario_fin, estado, transporte, paradas);
+                List<Tarifa> tarifas = TarifaDAO.obtenerTarifasPorRuta(id_ruta);
+
+                switch (tipo_transporte)
+                {
+                    case 1:
+                        route = new Minibus(id_ruta, nombre_inicio, nombre_fin, horario_inicio, horario_fin, estado, tarifas, paradas, "965", CartelDAO.obtenerCartelesPorRuta(id_ruta));
+                        break;
+                
+                    case 2:
+                        route = new Pumakatari(id_ruta, nombre_inicio, nombre_fin, horario_inicio, horario_fin, estado, tarifas, paradas);
+                        break;
+
+                    case 3:
+                        route = new Teleferico(id_ruta, nombre_inicio, nombre_fin, horario_inicio, horario_fin, estado, tarifas, paradas, "Roja");
+                        break;
+
+                    default:
+                        break;
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            throw e;
         }
         return route;
     }

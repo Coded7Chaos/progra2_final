@@ -2,25 +2,17 @@ package com.transporte.models;
 
 import java.util.List;
 
-public class Pumakatari extends MedioTransporte
+public class Pumakatari extends Ruta
 {
-    private List<String> letrero;
-    
-    public Pumakatari(int id_transporte, List<Tarifa> tarifas)
+    public Pumakatari() {}
+    public Pumakatari(int id_ruta, String nombreInicio, String nombreFin, String horarioInicio, String horarioFin, int estado, List<Tarifa> tarifas, List<Parada> paradas)
     {
-        super(id_transporte, "Pumakatari", tarifas);
+        super(id_ruta, nombreInicio, nombreFin, horarioInicio, horarioFin, estado, 2, tarifas, paradas);
     }
 
     @Override
-    public String getInfoRutas()
+    public String getInfo()
     {
-        StringBuilder info = new StringBuilder("[Pumakatari]: - Paradas: ");
-        return info.toString();
-    }
-
-    @Override
-    public String toString()
-    {
-        return "Pumakatari";
+        return "";
     }
 }

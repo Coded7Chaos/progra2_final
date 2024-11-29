@@ -188,16 +188,18 @@ public class CrearParada extends JFrame
 			@Override
             public void actionPerformed(ActionEvent e)
 			{
-                try{
+                try
+				{
 					FieldValidator.validateTextField("Nombre de la parada", nombreParada.getText());
 					FieldValidator.validateTextField("Direccion de la parada", direccionParada.getText());
 					FieldValidator.validateTextField("latitud", latitud.getText());
 					FieldValidator.validateTextField("longitud", longitud.getText());
-					FieldValidator.validateField(zonaSeleccionada.getZona());
+					FieldValidator.validateField(zonaSeleccionada.getNombre());
 
-					Parada nuevaParada = new Parada(nombreParada.getText(), latitude, longitude, direccionParada.getText(), zonaSeleccionada, rutas.get(comboBoxRutas.getSelectedIndex()).getId());
-					try{
-						pDAO.guardarParada(nuevaParada);
+					Parada nuevaParada = new Parada(rutas.get(comboBoxRutas.getSelectedIndex()).getId(), nombreParada.getText(), latitude, longitude, direccionParada.getText(), zonaSeleccionada);
+					try
+					{
+						nuevaParada.guardarParada();
 						JOptionPane.showMessageDialog(contentPane, "Parada guardada exitosamente");
 
 					} catch(SQLException es){

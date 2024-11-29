@@ -2,30 +2,28 @@ package com.transporte.gui;
 
 import com.transporte.dao.RutaDAO;
 import com.transporte.models.Ruta;
-import com.transporte.models.Zona;
 import com.transporte.models.Parada;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
 import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.Waypoint;
 import org.jxmapviewer.viewer.WaypointPainter;
-import org.jxmapviewer.painter.Painter;
 import org.jxmapviewer.viewer.DefaultWaypoint;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class MainWindow extends JFrame {
-
+public class MainWindow extends JFrame
+{
     private JComboBox<String> comboBoxRutas;
     private JXMapViewer mapViewer;
     private JButton btnAgregar, btnModificar, btnEliminar, btnMasInformacion;
@@ -38,12 +36,12 @@ public class MainWindow extends JFrame {
         setBounds(100, 100, 1000, 600);
         setLayout(new BorderLayout(10, 10));
 
-        RutaDAO rdao = new RutaDAO();
-        this.rutas = rdao.obtenerRutas();
-
-        String[] nombresRutas = new String[rutas.size()];
-        for (int i = 0; i < rutas.size(); i++)
-            nombresRutas[i] = String.format("%s - %s", rutas.get(i).getNombreInicio(), rutas.get(i).getNombreFin());
+        try
+        {
+            this.rutas = RutaDAO.obtenerRutas();
+        } catch (SQLException e) {
+            System.out.println("Error al obtener las rutas: " + e.getMessage());
+        }
 
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
@@ -53,6 +51,10 @@ public class MainWindow extends JFrame {
         JLabel lblSeleccionarRuta = new JLabel("Seleccionar ruta:");
         lblSeleccionarRuta.setFont(new Font("Arial", Font.PLAIN, 14));
         topPanel.add(lblSeleccionarRuta);
+
+        String[] nombresRutas = new String[rutas.size()];
+        for (int i = 0; i < rutas.size(); i++)
+            nombresRutas[i] = String.format("%s - %s", rutas.get(i).getNombreInicio(), rutas.get(i).getNombreFin());
 
         comboBoxRutas = new JComboBox<>(nombresRutas);
         comboBoxRutas.setFont(new Font("Arial", Font.PLAIN, 14));
@@ -104,6 +106,11 @@ public class MainWindow extends JFrame {
                 int selectedIndex = comboBoxRutas.getSelectedIndex();
                 updateWaypoints(selectedIndex);
             }
+        });
+
+        btnMasInformacion.addActionListener(e -> {
+            InformationWindow np = new InformationWindow(rutas.get(comboBoxRutas.getSelectedIndex()));
+            np.setVisible(true);
         });
 
         btnAgregar.addActionListener(e -> {

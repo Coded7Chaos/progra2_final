@@ -5,12 +5,13 @@ CREATE TABLE Rutas (
     horario_inicio VARCHAR(10),
     horario_fin VARCHAR(10),
     estado INT,
+    tipo_transporte INT,
     
     PRIMARY KEY (id_ruta)
 );
 
-INSERT INTO Rutas (nombre_inicio, nombre_fin, horario_inicio, horario_fin, estado)
-VALUES ("San Pedro", "Achumani", "06:00", "23:00", 0);
+INSERT INTO Rutas (nombre_inicio, nombre_fin, horario_inicio, horario_fin, estado, tipo_transporte)
+VALUES ("San Pedro", "Achumani", "06:00", "23:00", 0, 1);
 
-INSERT INTO Rutas (nombre_inicio, nombre_fin, horario_inicio, horario_fin, estado)
-VALUES ("Plaza Camacho", "Chasquipampa", "06:00", "23:00", 0);
+INSERT INTO Rutas (nombre_inicio, nombre_fin, horario_inicio, horario_fin, estado, tipo_transporte)
+VALUES ("Plaza Camacho", "Chasquipampa", "06:00", "23:00", 0, 2);

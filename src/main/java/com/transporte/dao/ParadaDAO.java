@@ -12,32 +12,6 @@ import com.transporte.models.Parada;
 
 public class ParadaDAO implements ParadaDAOInterface
 {
-    @Override
-    public void guardarParada(Parada parada) throws SQLException
-    {
-        try (Connection conn = DatabaseConnection.getConnection();
-	            PreparedStatement stmt = conn.prepareStatement("INSERT INTO Paradas (id_ruta, id_zona, nombre, latitud, longitud, direccion, color, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"))
-        {
-            stmt.setInt(1, parada.getIdRuta());
-            stmt.setInt(2, parada.getZona().getIdZona());
-            stmt.setString(3, parada.getNombre());
-            stmt.setDouble(4, parada.getLatitud());
-            stmt.setDouble(5, parada.getLongitud());
-            stmt.setString(6, parada.getDireccion());
-            stmt.setString(7, parada.getColor() == null ? "#FFFFFF" : parada.getColor());
-            stmt.setBoolean(8, false);
-
-		    int filasAfectadas = stmt.executeUpdate();
-		    if (filasAfectadas > 0)
-                System.out.println("Parada guardada exitosamente.");
-
-        } catch (SQLException e) {
-		    e.printStackTrace();
-            throw e;
-	    }
-    }
-
-    @Override
     public List<Parada> obtenerParadas()
     {
 
@@ -79,7 +53,6 @@ public class ParadaDAO implements ParadaDAOInterface
 	    return paradas;
     }
 
-    @Override
     public List<Parada> obtenerParadaPorId(int idRuta)
     {
         List<Parada> paradas = new ArrayList<>();
@@ -114,19 +87,5 @@ public class ParadaDAO implements ParadaDAOInterface
         }
 
         return paradas;
-    }
-                
-    @Override
-    public void actualizarParada(Parada parada)
-    {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'actualizarParada'");
-    }
-
-    @Override
-    public void eliminarParada(int idParada)
-    {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'eliminarParada'");
     }
 }
