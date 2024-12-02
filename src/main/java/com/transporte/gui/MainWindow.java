@@ -127,8 +127,8 @@ public class MainWindow extends JFrame
         });
 
         btnAgregar.addActionListener(e -> {
-            //CrearParada2 np = new CrearParada2();
-            //np.setVisible(true);
+            CrearParada2 np = new CrearParada2();
+            np.setVisible(true);
         });
 
         actualizarRutas(1);
