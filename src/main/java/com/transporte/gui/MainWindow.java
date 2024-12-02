@@ -24,10 +24,12 @@ import java.util.Set;
 
 public class MainWindow extends JFrame
 {
+    private JComboBox<String> comboBoxTransportes;
     private JComboBox<String> comboBoxRutas;
     private JXMapViewer mapViewer;
     private JButton btnAgregar, btnCrear, btnMasInformacion;
     private List<Ruta> rutas;
+    private int tipo_transporte;
 
     public MainWindow()
     {
@@ -36,27 +38,26 @@ public class MainWindow extends JFrame
         setBounds(100, 100, 1000, 600);
         setLayout(new BorderLayout(10, 10));
 
-        try
-        {
-            this.rutas = RutaDAO.obtenerRutas();
-        } catch (SQLException e) {
-            System.out.println("Error al obtener las rutas: " + e.getMessage());
-        }
-
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
         topPanel.setBackground(new Color(240, 240, 240));
         add(topPanel, BorderLayout.NORTH);
 
+        JLabel lblSeleccionarTransporte = new JLabel("Seleccionar transporte:");
+        lblSeleccionarTransporte.setFont(new Font("Arial", Font.PLAIN, 14));
+        topPanel.add(lblSeleccionarTransporte);
+
+        String[] transportes = {"Minibus", "Pumakatari", "Teleférico"};
+        comboBoxTransportes = new JComboBox<>(transportes);
+        comboBoxTransportes.setFont(new Font("Arial", Font.PLAIN, 14));
+        comboBoxTransportes.setPreferredSize(new Dimension(150, 30));
+        topPanel.add(comboBoxTransportes);
+
         JLabel lblSeleccionarRuta = new JLabel("Seleccionar ruta:");
         lblSeleccionarRuta.setFont(new Font("Arial", Font.PLAIN, 14));
         topPanel.add(lblSeleccionarRuta);
 
-        String[] nombresRutas = new String[rutas.size()];
-        for (int i = 0; i < rutas.size(); i++)
-            nombresRutas[i] = String.format("%s - %s", rutas.get(i).getNombreInicio(), rutas.get(i).getNombreFin());
-
-        comboBoxRutas = new JComboBox<>(nombresRutas);
+        comboBoxRutas = new JComboBox<>();
         comboBoxRutas.setFont(new Font("Arial", Font.PLAIN, 14));
         comboBoxRutas.setPreferredSize(new Dimension(200, 30));
         topPanel.add(comboBoxRutas);
@@ -93,24 +94,31 @@ public class MainWindow extends JFrame
         btnAgregar.setFocusPainted(false);
         bottomPanel.add(btnAgregar);
 
-        /*btnEliminar = new JButton("Eliminar");
-        btnEliminar.setFont(new Font("Arial", Font.PLAIN, 14));
-        btnEliminar.setBackground(new Color(204, 51, 51));
-        btnEliminar.setForeground(Color.WHITE);
-        btnEliminar.setFocusPainted(false);
-        bottomPanel.add(btnEliminar);*/
+        comboBoxTransportes.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tipo_transporte = comboBoxTransportes.getSelectedIndex() + 1;
+                actualizarRutas(tipo_transporte);
+            }
+        });
 
         comboBoxRutas.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int selectedIndex = comboBoxRutas.getSelectedIndex();
-                updateWaypoints(selectedIndex);
+                if (selectedIndex >= 0) {
+                    updateWaypoints(selectedIndex);
+                }
             }
         });
 
         btnMasInformacion.addActionListener(e -> {
-            InformationWindow np = new InformationWindow(rutas.get(comboBoxRutas.getSelectedIndex()));
-            np.setVisible(true);
+            int selectedIndex = comboBoxRutas.getSelectedIndex();
+            if (selectedIndex >= 0)
+            {
+                InformationWindow np = new InformationWindow(rutas.get(selectedIndex));
+                np.setVisible(true);
+            }
         });
 
         btnCrear.addActionListener(e -> {
@@ -119,23 +127,49 @@ public class MainWindow extends JFrame
         });
 
         btnAgregar.addActionListener(e -> {
-			CrearParada np = new CrearParada(rutas);
-            np.setVisible(true);
-		});
+            //CrearParada2 np = new CrearParada2();
+            //np.setVisible(true);
+        });
 
-        updateWaypoints(0);
+        actualizarRutas(1);
     }
 
-    private void updateWaypoints(int index)
-    {
-        Set<Waypoint> waypoints = new HashSet<>();
+    private void actualizarRutas(int tipo_transporte) {
+        try
+        {
+            this.rutas = RutaDAO.obtenerRutasPorMedioTransporte(tipo_transporte);
+            comboBoxRutas.removeAllItems();
+            for (Ruta ruta : rutas)
+            {
+                comboBoxRutas.addItem(String.format("%s - %s", ruta.getNombreInicio(), ruta.getNombreFin()));
+            }
+            if (!rutas.isEmpty())
+            {
+                updateWaypoints(0);
+            }
+            
 
-        for (Parada parada : rutas.get(index).getParadas())
+        } catch (Exception e) {
+            System.out.println("Error al obtener las rutas: " + e.getMessage());
+        }
+    }
+
+    private void updateWaypoints(int index) {
+        Set<Waypoint> waypoints = new HashSet<>();
+        for (Parada parada : rutas.get(index).getParadas()) {
             waypoints.add(new DefaultWaypoint(new GeoPosition(parada.getLatitud(), parada.getLongitud())));
+        }
 
         WaypointPainter<Waypoint> waypointPainter = new WaypointPainter<>();
         waypointPainter.setWaypoints(waypoints);
 
         mapViewer.setOverlayPainter(waypointPainter);
     }
+
+    public static void main(String[] args)
+    {
+        MainWindow np = new MainWindow();
+        np.setVisible(true);
+    }
+
 }

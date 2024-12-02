@@ -7,10 +7,10 @@ import java.util.List;
 
 import com.transporte.models.Zona;
 import com.transporte.config.DatabaseConnection;
-import com.transporte.models.Parada;
+import com.transporte.models.*;
 //import com.transporte.utils.Zona;
 
-public class ParadaDAO implements ParadaDAOInterface
+public class ParadaDAO 
 {
     public List<Parada> obtenerParadas()
     {
@@ -41,10 +41,10 @@ public class ParadaDAO implements ParadaDAOInterface
                 ZonaDAO zDAO = new ZonaDAO();
 	    		Zona zona = zDAO.getZonaDeParada(id_zona);
 
-                Parada parada = new Parada(id_parada, id_ruta, nombre, latitud, longitud, direccion, color, zona, estado);
+                //Parada parada = new Parada(id_parada, id_ruta, nombre, latitud, longitud, direccion, color, zona, estado);
                 
 	    		// Agregar a la lista
-	    		paradas.add(parada);
+	    		//paradas.add(parada);
 	    	}
 
 	    } catch(SQLException e) {
@@ -78,8 +78,8 @@ public class ParadaDAO implements ParadaDAOInterface
                 ZonaDAO zDAO = new ZonaDAO();
 	    		Zona zona = zDAO.getZonaDeParada(id_zona);
 
-                Parada parada = new Parada(id_parada, id_ruta, nombre, latitud, longitud, direccion, color, zona, estado);
-                paradas.add(parada);
+                //Parada parada = new ParadaPuma(id_parada, id_ruta, nombre, latitud, longitud, direccion, color, zona, estado);
+                //paradas.add(parada);
             }
 
         } catch (SQLException e) {

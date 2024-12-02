@@ -5,16 +5,16 @@ import java.util.List;
 
 public abstract class Ruta
 {
-    private int id_ruta;
-    private String nombreInicio;
-    private String nombreFin;
-    private String horarioInicio;
-    private String horarioFin;
-    private int estado;
-    private int tipo_transporte;
-    //private MedioTransporte transporte;
-    private List<Tarifa> tarifas;
-    private List<Parada> paradas;
+    public static int id_ruta;
+    protected String nombreInicio;
+    protected String nombreFin;
+    protected String horarioInicio;
+    protected String horarioFin;
+    protected int estado;
+    protected int tipo_transporte;
+    //protected MedioTransporte transporte;
+    protected List<Tarifa> tarifas;
+    protected List<Parada> paradas;
 
     public Ruta() {}
     public Ruta(String nombreInicio, String nombreFin, String horarioInicio, String horarioFin, int estado, int tipo_transporte, List<Tarifa> tarifas, List<Parada> paradas)
@@ -28,6 +28,7 @@ public abstract class Ruta
         this.tarifas = tarifas;
         this.paradas = paradas;
     }
+
     public Ruta(int id_ruta, String nombreInicio, String nombreFin, String horarioInicio, String horarioFin, int estado, int tipo_transporte, List<Tarifa> tarifas, List<Parada> paradas)
     {
         this.id_ruta = id_ruta;
@@ -40,6 +41,21 @@ public abstract class Ruta
         this.tarifas = tarifas;
         this.paradas = paradas;
     }
+
+ public Ruta(int id_ruta, String nombreInicio, String nombreFin)
+    {
+        this.id_ruta = id_ruta;
+        this.nombreInicio = nombreInicio;
+        this.nombreFin = nombreFin;
+        
+    }
+
+    public Ruta(int id_ruta)
+    {
+        this.id_ruta = id_ruta;
+        
+    }
+
 
     public int getId() { return id_ruta; }
     public void setId(int id_ruta) { this.id_ruta = id_ruta; }

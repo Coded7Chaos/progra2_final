@@ -16,6 +16,11 @@ public class Minibus extends Ruta
     private String numero;
     private List<String> carteles;
 
+    
+    public Minibus(int id_ruta, String numero){
+        super(id_ruta);
+        this.numero = numero;
+    }
     public Minibus(String nombreInicio, String nombreFin, String horarioInicio, String horarioFin, int estado, String numero, List<String> carteles)
     {
         super(nombreInicio, nombreFin, horarioInicio, horarioFin, estado, 1, new ArrayList<>(), new ArrayList<>());

@@ -55,7 +55,7 @@ public class InformationWindow extends JFrame
 
         StringBuilder sbP = new StringBuilder();
         for (Parada parada : ruta.getParadas())
-            sbP.append(String.format("• %s, %s\n", parada.getNombre(), parada.getZona().getNombre()));
+            sbP.append(String.format("• %s, %s\n", "Arreglar", parada.getZona().getNombre()));
 
         JTextArea textoParadas = new JTextArea(sbP.toString());
         textoParadas.setEditable(false);

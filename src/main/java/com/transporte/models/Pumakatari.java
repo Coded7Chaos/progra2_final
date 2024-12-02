@@ -14,14 +14,24 @@ public class Pumakatari extends Ruta
 {
     private String nombreTransporte;
 
+
+
     public Pumakatari() {}
     public Pumakatari(String nombreInicio, String nombreFin, String horarioInicio, String horarioFin, int estado)
     {
         super(nombreInicio, nombreFin, horarioInicio, horarioFin, estado, 2, new ArrayList<>(), new ArrayList<>());
     }
+
+
     public Pumakatari(int id_ruta, String nombreInicio, String nombreFin, String horarioInicio, String horarioFin, int estado, List<Tarifa> tarifas, List<Parada> paradas)
     {
         super(id_ruta, nombreInicio, nombreFin, horarioInicio, horarioFin, estado, 2, tarifas, paradas);
+        this.nombreTransporte = "Pumakatari";
+    }
+
+    public Pumakatari(int id_ruta, String nombreInicio, String nombreFin)
+    {
+        super(id_ruta, nombreInicio, nombreFin);
         this.nombreTransporte = "Pumakatari";
     }
 

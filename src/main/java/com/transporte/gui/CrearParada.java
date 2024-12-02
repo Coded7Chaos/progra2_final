@@ -1,4 +1,4 @@
-package com.transporte.gui;
+/*package com.transporte.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -213,4 +213,4 @@ public class CrearParada extends JFrame
 		}});
 	}
 
-}
+}*/

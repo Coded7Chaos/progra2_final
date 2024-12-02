@@ -15,6 +15,13 @@ public class Teleferico extends Ruta
     private String nombreTransporte;
     private String linea;
 
+    public Teleferico(int id_ruta, String linea)
+    {
+        super(id_ruta);
+        this.linea = linea;
+    }
+
+
     public Teleferico(String nombreInicio, String nombreFin, String horarioInicio, String horarioFin, int estado, String linea)
     {
         super(nombreInicio, nombreFin, horarioInicio, horarioFin, estado, 2, new ArrayList<>(), new ArrayList<>());

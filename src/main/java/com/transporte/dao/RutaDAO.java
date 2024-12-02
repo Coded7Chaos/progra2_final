@@ -109,4 +109,54 @@ public class RutaDAO
         }
         return route;
     }
+    public static List<Ruta> obtenerRutasPorMedioTransporte(int tipo) throws SQLException
+    {
+        List<Ruta> rutas = new ArrayList<>();
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement("SELECT id_ruta, nombre_inicio, nombre_fin, horario_inicio, horario_fin, tipo_transporte, estado FROM Rutas WHERE tipo_transporte = ?"))
+        {
+            ps.setInt(1, tipo);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next())
+            {
+                int id_ruta             = rs.getInt("id_ruta");
+                String nombre_inicio    = rs.getString("nombre_inicio");
+                String nombre_fin       = rs.getString("nombre_fin");
+                String horario_inicio   = rs.getString("horario_inicio");
+                String horario_fin      = rs.getString("horario_fin");
+                int tipo_transporte     = rs.getInt("tipo_transporte");
+                int estado              = rs.getInt("estado");
+
+                ParadaDAO pdao = new ParadaDAO();
+                List<Parada> paradas = pdao.obtenerParadaPorId(id_ruta);
+
+                List<Tarifa> tarifas = TarifaDAO.obtenerTarifasPorRuta(id_ruta);
+
+                Ruta route = new Pumakatari();
+                switch (tipo_transporte)
+                {
+                    case 1:
+                        route = new Minibus(id_ruta, nombre_inicio, nombre_fin, horario_inicio, horario_fin, estado, tarifas, paradas, RutaNumeroDAO.obtenerNumeroPorRuta(id_ruta), CartelDAO.obtenerCartelesPorRuta(id_ruta));
+                        break;
+                
+                    case 2:
+                        route = new Pumakatari(id_ruta, nombre_inicio, nombre_fin, horario_inicio, horario_fin, estado, tarifas, paradas);
+                        break;
+
+                    case 3:
+                        route = new Teleferico(id_ruta, nombre_inicio, nombre_fin, horario_inicio, horario_fin, estado, tarifas, paradas, LineaDAO.obtenerLineaPorRuta(id_ruta));
+                        break;
+
+                    default:
+                        break;
+                }
+                rutas.add(route);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+        return rutas;
+    }
 }
