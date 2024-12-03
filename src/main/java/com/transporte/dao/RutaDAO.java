@@ -1,16 +1,20 @@
 package com.transporte.dao;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.transporte.config.DatabaseConnection;
-import com.transporte.models.Ruta;
-import com.transporte.models.Teleferico;
 import com.transporte.models.Minibus;
 import com.transporte.models.Parada;
 import com.transporte.models.Pumakatari;
+import com.transporte.models.Ruta;
 import com.transporte.models.Tarifa;
+import com.transporte.models.Teleferico;
 
 public class RutaDAO
 {

@@ -15,6 +15,21 @@ public class EstacionTeleferico extends Parada{
     private List<Integer> negocios;
     private String color;
 
+
+
+
+
+        
+    public EstacionTeleferico(double longitud, double latitud, Zona zona, int idRuta, String nombre, String direccion,
+            Boolean parqueo, List<Integer> negocios, String color) {
+        super(longitud, latitud, zona, idRuta);
+        this.nombre = nombre;
+        this.direccion = direccion;
+        this.parqueo = parqueo;
+        this.negocios = negocios;
+        this.color = color;
+    }
+
     @Override
     public void guardarParada() throws SQLException {
         int generatedId=0;
@@ -73,14 +88,17 @@ public class EstacionTeleferico extends Parada{
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'eliminarParada'");
     }
+
+    /* 
     public EstacionTeleferico(double longitud, double latitud, Zona zona, String nombre, String direccion,
             Boolean parqueo, List<Integer> negocios) {
-        super(longitud, latitud, zona);
+        super(longitud, latitud, zona, idRuta);
         this.nombre = nombre;
         this.direccion = direccion;
         this.parqueo = parqueo;
         this.negocios = negocios;
-    }
+    }*/
+    
     public String getNombre() {
         return nombre;
     }

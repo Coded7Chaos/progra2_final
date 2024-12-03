@@ -1,11 +1,19 @@
 package com.transporte.dao;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.transporte.config.DatabaseConnection;
-import com.transporte.models.*;
+import com.transporte.models.EstacionTeleferico;
+import com.transporte.models.Parada;
+import com.transporte.models.ParadaPuma;
+import com.transporte.models.PuntosMinibus;
+import com.transporte.models.Zona;
 //import com.transporte.utils.Zona;
 
 public class ParadaDAO {
@@ -100,7 +108,7 @@ public class ParadaDAO {
         {
             case 1:
                 try (Connection conn = DatabaseConnection.getConnection();
-                    PreparedStatement ps = conn.prepareStatement("SELECT p.id_parada, p.id_zona, p.latitud, p.longitud, p.color, pm.trayectoria FROM Paradas AS p JOIN Puntos_minibus AS pm ON pm.idParada = p.id_parada WHERE p.id_ruta = ?"))
+                    PreparedStatement ps = conn.prepareStatement("SELECT p.id_parada, p.id_ruta, p.id_zona, p.latitud, p.longitud, p.color, pm.trayectoria FROM Paradas AS p JOIN Puntos_minibus AS pm ON pm.idParada = p.id_parada WHERE p.id_ruta = ?"))
                 {
                     ps.setInt(1, idRuta);
                     ResultSet rs = ps.executeQuery();
@@ -108,6 +116,7 @@ public class ParadaDAO {
                     while (rs.next())
                     {
                         int id_parada       = rs.getInt("id_parada");
+                        int id_ruta         = rs.getInt("id_ruta");
                         int id_zona         = rs.getInt("id_zona");
                         double latitud      = rs.getDouble("latitud");
                         double longitud     = rs.getDouble("longitud");
@@ -117,7 +126,7 @@ public class ParadaDAO {
                         ZonaDAO zDAO = new ZonaDAO();
                         Zona zona = zDAO.getZonaDeParada(id_zona);
 
-                        Parada parada = new PuntosMinibus(longitud, latitud, zona, color, trayectoria);
+                        Parada parada = new PuntosMinibus(longitud, latitud, zona, id_ruta, color, trayectoria);
                         paradas.add(parada);
                     }
 
@@ -129,7 +138,7 @@ public class ParadaDAO {
             case 2:
 
                 try (Connection conn = DatabaseConnection.getConnection();
-                    PreparedStatement ps = conn.prepareStatement("SELECT p.id_parada, p.id_zona, p.latitud, p.longitud, p.color, pp.nombre, pp.direccion, pp.estado, pp.trayectoria, pp.tiempo_espera FROM Paradas AS p JOIN Paradas_pumakatari AS pp ON pp.idParada = p.id_parada WHERE p.id_ruta = ?"))
+                    PreparedStatement ps = conn.prepareStatement("SELECT p.id_parada, p.id_ruta, p.id_zona, p.latitud, p.longitud, p.color, pp.nombre, pp.direccion, pp.estado, pp.trayectoria, pp.tiempo_espera FROM Paradas AS p JOIN Paradas_pumakatari AS pp ON pp.idParada = p.id_parada WHERE p.id_ruta = ?"))
                 {
                     ps.setInt(1, idRuta);
                     ResultSet rs = ps.executeQuery();
@@ -137,6 +146,7 @@ public class ParadaDAO {
                     while (rs.next())
                     {
                         int id_parada       = rs.getInt("id_parada");
+                        int id_ruta         = rs.getInt("id_ruta");
                         int id_zona         = rs.getInt("id_zona");
                         double latitud      = rs.getDouble("latitud");
                         double longitud     = rs.getDouble("longitud");
@@ -150,7 +160,7 @@ public class ParadaDAO {
                         ZonaDAO zDAO = new ZonaDAO();
                         Zona zona = zDAO.getZonaDeParada(id_zona);
 
-                        Parada parada = new ParadaPuma(longitud, latitud, zona, nombre, direccion, estado, trayectoria, tiempoDeEspera);
+                        Parada parada = new ParadaPuma(longitud, latitud, zona, id_ruta, nombre, direccion, estado, trayectoria, tiempoDeEspera);
                         paradas.add(parada);
                     }
 
@@ -161,7 +171,7 @@ public class ParadaDAO {
 
             case 3:
                 try (Connection conn = DatabaseConnection.getConnection();
-                    PreparedStatement ps = conn.prepareStatement("SELECT p.id_parada, p.id_zona, p.longitud, p.latitud, p.color, et.id, et.nombre, et.direccion, et.parqueo FROM Paradas AS p JOIN Estaciones_teleferico AS et ON et.idParada = p.id_parada WHERE p.id_ruta = ?"))
+                    PreparedStatement ps = conn.prepareStatement("SELECT p.id_parada, p.id_ruta, p.id_zona, p.longitud, p.latitud, p.color, et.id, et.nombre, et.direccion, et.parqueo FROM Paradas AS p JOIN Estaciones_teleferico AS et ON et.idParada = p.id_parada WHERE p.id_ruta = ?"))
                 {
                     ps.setInt(1, idRuta);
                     ResultSet rs = ps.executeQuery();
@@ -169,6 +179,7 @@ public class ParadaDAO {
                     while (rs.next())
                     {
                         int id_parada       = rs.getInt("id_parada");
+                        int id_ruta         = rs.getInt("id_ruta");
                         int id_zona         = rs.getInt("id_zona");
                         double latitud      = rs.getDouble("latitud");
                         double longitud     = rs.getDouble("longitud");
@@ -183,7 +194,7 @@ public class ParadaDAO {
                     
                         List<Integer> negocios = NegociosDAO.obtenerNegociosPorEstacion(id_estacion);
                         // (double longitud, double latitud, Zona zona, String nombre, String direccion, Boolean parqueo, List<Integer> negocios)
-                        Parada parada = new EstacionTeleferico(longitud, latitud, zona, nombre, direccion, parqueo, negocios);
+                        Parada parada = new EstacionTeleferico(longitud, latitud, zona, id_ruta, nombre, direccion, parqueo, negocios, color);
                         paradas.add(parada);
                     }
 

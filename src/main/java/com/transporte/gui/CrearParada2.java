@@ -1,11 +1,38 @@
 package com.transporte.gui;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import org.jxmapviewer.JXMapViewer;
@@ -16,13 +43,6 @@ import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.Waypoint;
 import org.jxmapviewer.viewer.WaypointPainter;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.transporte.config.DatabaseConnection;
 import com.transporte.dao.ParadaDAO;
 import com.transporte.dao.ZonaDAO;
@@ -30,14 +50,10 @@ import com.transporte.models.EstacionTeleferico;
 import com.transporte.models.Minibus;
 import com.transporte.models.ParadaPuma;
 import com.transporte.models.Pumakatari;
+import com.transporte.models.PuntosMinibus;
 import com.transporte.models.Ruta;
 import com.transporte.models.Teleferico;
 import com.transporte.models.Zona;
-import com.transporte.utils.Fonts;
-import java.sql.*;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class CrearParada2<E> extends JFrame {
 	private JXMapViewer mapViewer;
@@ -54,6 +70,9 @@ public class CrearParada2<E> extends JFrame {
 	private JTextField textField_1;
 	private JTextField textField_3;
 	private JTextField textField_4;
+	private int idRutaPuma;
+	private int idTele;
+	private int idMini;
 	String[] colores = {
 		"Rojo",
 		"Amarillo",
@@ -72,7 +91,7 @@ public class CrearParada2<E> extends JFrame {
 		String query = """
 				SELECT (id_ruta, nombre_inicio, nombre_fin) FROM Rutas 
 				WHERE estado=true
-				and tipo_transporte=1
+				and tipo_transporte=2
 				""";
 		try(Connection conn = DatabaseConnection.getConnection();
 			Statement s = conn.createStatement();
@@ -81,7 +100,7 @@ public class CrearParada2<E> extends JFrame {
 					int id_ruta = rs.getInt("id_ruta");
 					String nombre_inicio = rs.getString("nombre_inicio");
 					String nombre_fin = rs.getString("nombre_fin");
-					Pumakatari rutaPuma = new Pumakatari(id_ruta, nombre_fin, nombre_fin);
+					Pumakatari rutaPuma = new Pumakatari(id_ruta, nombre_inicio, nombre_fin);
 					rp.add(rutaPuma); 
 				}
 			}catch(SQLException sqle){
@@ -337,7 +356,7 @@ public class CrearParada2<E> extends JFrame {
 	        spinner.setModel(new SpinnerNumberModel(15, 0, 60, 1));
 	        panel1.add(spinner);
 	        
-	        JLabel lblNewLabel_8 = new JLabel("Ruta o rutas relacionadas");
+	        JLabel lblNewLabel_8 = new JLabel("Ruta a la que pertenece");
 	        panel1.add(lblNewLabel_8);
 	        
 			List<Ruta> rPuma = rutasPuma(); 
@@ -347,10 +366,8 @@ public class CrearParada2<E> extends JFrame {
             nombresRutasPuma[i] = rPuma.get(i).getNombreInicio() + "-" + rPuma.get(i).getNombreFin(); 
         }
 
-			JList<String> listaRutas1 = new JList<>(nombresRutasPuma);
-			listaRutas1.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-			JScrollPane scrollPane = new JScrollPane(listaRutas1);
-	        panel1.add(scrollPane);
+			JComboBox<Ruta> comboBoxRutasPuma = new JComboBox<>(rPuma.toArray(new Ruta[0]));
+			panel1.add(comboBoxRutasPuma);
 
 	        
 	        JButton guardarParadaPuma = new JButton("Guardar");
@@ -358,11 +375,24 @@ public class CrearParada2<E> extends JFrame {
 	        guardarParadaPuma.setHorizontalAlignment(SwingConstants.CENTER);
 	        panel1.add(guardarParadaPuma);
 	        
+			Ruta rutaPumaSeleccionada = new Pumakatari();
+			rutaPumaSeleccionada = (Ruta)comboBoxRutasPuma.getSelectedItem();
+			this.idRutaPuma = rutaPumaSeleccionada.getId();
+
 			guardarParadaPuma.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e)
 				{
-					ParadaPuma pPuma = new ParadaPuma(longitude, latitude, zonaSeleccionada, lblNewLabel_5.getText(), lblNewLabel_7.getText(), true, null, (Integer)spinner.getValue());
+					
+					ParadaPuma pPuma = new ParadaPuma(longitude, latitude, zonaSeleccionada, idRutaPuma ,lblNewLabel_5.getText(), lblNewLabel_7.getText(), true, null, (Integer)spinner.getValue());
+					try {
+						pPuma.guardarParada();
+						JOptionPane.showMessageDialog(contentPane, "Parada Guardada correctamente");
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
 				}
 			});
 
@@ -396,41 +426,41 @@ public class CrearParada2<E> extends JFrame {
 	        JCheckBox chckbxNewCheckBox = new JCheckBox("Parqueo");
 	        panel_7.add(chckbxNewCheckBox);
 	        
-	        JCheckBox chckbxNewCheckBox_1 = new JCheckBox(neg.get(2));
+	        JCheckBox chckbxNewCheckBox_1 = new JCheckBox("Baño");
 	        panel_7.add(chckbxNewCheckBox_1);
 	        
-	        JCheckBox chckbxNewCheckBox_2 = new JCheckBox(neg.get(3));
+	        JCheckBox chckbxNewCheckBox_2 = new JCheckBox("Restaurante");
 	        panel_7.add(chckbxNewCheckBox_2);
 	        
-	        JCheckBox chckbxNewCheckBox_3 = new JCheckBox(neg.get(4));
+	        JCheckBox chckbxNewCheckBox_3 = new JCheckBox("Area de descanso");
 	        panel_7.add(chckbxNewCheckBox_3);
 	        
-	        JCheckBox chckbxNewCheckBox_4 = new JCheckBox(neg.get(5));
+	        JCheckBox chckbxNewCheckBox_4 = new JCheckBox("ATM Banco Union");
 	        panel_7.add(chckbxNewCheckBox_4);
 
-			JCheckBox chckbxNewCheckBox_5 = new JCheckBox(neg.get(6));
+			JCheckBox chckbxNewCheckBox_5 = new JCheckBox("ATM Banco Union");
 	        panel_7.add(chckbxNewCheckBox_5);
 
-			JCheckBox chckbxNewCheckBox_6 = new JCheckBox(neg.get(7));
+			JCheckBox chckbxNewCheckBox_6 = new JCheckBox("ATM Banco Nacional de Bolivia");
 	        panel_7.add(chckbxNewCheckBox_6);
 
-			JCheckBox chckbxNewCheckBox_7 = new JCheckBox(neg.get(1));
+			JCheckBox chckbxNewCheckBox_7 = new JCheckBox("Supermercado");
 	        panel_7.add(chckbxNewCheckBox_7);
 	        
 			List<Teleferico> rTeleferico = rutasTeleferico();
-
+/*
 			String[] telefericoLineas = new String[rTeleferico.size()];
         for (int i = 0; i < rTeleferico.size(); i++) {
             telefericoLineas[i] = rTeleferico.get(i).getLinea(); 
         }
-
-	        JLabel lblNewLabel_9 = new JLabel("Lineas relacionadas");
+ */
+	        JLabel lblNewLabel_9 = new JLabel("Linea relacionada");
 	        panel2.add(lblNewLabel_9);
 
 
 
-	        JList<String> listColores = new JList(telefericoLineas);
-	        panel2.add(listColores);
+	        JComboBox<Teleferico> comboBoxRutasTele = new JComboBox<>(rTeleferico.toArray(new Teleferico[0]));
+	        panel2.add(comboBoxRutasTele);
 	        
 
 	        JButton guardarTele = new JButton("Guardar");
@@ -439,6 +469,11 @@ public class CrearParada2<E> extends JFrame {
 	        guardarTele.setHorizontalAlignment(SwingConstants.CENTER);
 	        panel2.add(guardarTele);
 	        
+
+			Teleferico rutaTeleSeleccionada = (Teleferico) comboBoxRutasTele.getSelectedItem();
+			String colortele = rutaTeleSeleccionada.getLinea();
+			this.idTele = rutaTeleSeleccionada.getId();
+
 
 			guardarTele.addActionListener(new ActionListener() {
 				@Override
@@ -461,10 +496,10 @@ public class CrearParada2<E> extends JFrame {
 						
 						if(chckbxNewCheckBox_6.isSelected()) negocios.add(7);
 
-						EstacionTeleferico nTele = new EstacionTeleferico(longitude, latitude, (Zona)comboBox.getSelectedItem(), 
-						textField_3.getText(), textField_4.getText(), chckbxNewCheckBox.isSelected(), negocios);
+						EstacionTeleferico nTele = new EstacionTeleferico(longitude, latitude, (Zona)comboBox.getSelectedItem(), idTele, textField_3.getText(), textField_4.getText(), chckbxNewCheckBox.isSelected(), negocios, colortele);
 
 						nTele.guardarParada();
+						JOptionPane.showMessageDialog(contentPane, "Parada Guardada correctamente");
 					} catch(SQLException sqe){
 						sqe.printStackTrace();
 					}
@@ -481,7 +516,7 @@ public class CrearParada2<E> extends JFrame {
 
 	        panel3.setLayout(new GridLayout(4, 2, 0, 0));
 	        
-	        JLabel lblNewLabel_10 = new JLabel("Ruta o rutas relacionadas");
+	        JLabel lblNewLabel_10 = new JLabel("Ruta relacionada");
 	        panel3.add(lblNewLabel_10);
 	        
 			
@@ -491,10 +526,8 @@ public class CrearParada2<E> extends JFrame {
         for (int i = 0; i < rMini.size(); i++) {
             nombresRutasMini[i] = rMini.get(i).getNumero(); 
 		}
-			JList<String> listaRutas = new JList<>(nombresRutasMini);
-			listaRutas.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-			JScrollPane scrollPane1 = new JScrollPane(listaRutas);
-	        panel3.add(scrollPane1);
+			JComboBox<Minibus> listaRutasmini = new JComboBox<>(rMini.toArray(new Minibus[0])); 
+	        panel3.add(listaRutasmini);
 	        
 	        JLabel lblNewLabel_11 = new JLabel("Color ");
 	        panel3.add(lblNewLabel_11);
@@ -504,13 +537,48 @@ public class CrearParada2<E> extends JFrame {
 	        
 	        JLabel lblNewLabel_12 = new JLabel("trayectoria");
 	        panel3.add(lblNewLabel_12);
+	        JPanel panelAux = new JPanel();
 	        
-	        JToggleButton tglbtnNewToggleButton = new JToggleButton("ida");
-	        panel3.add(tglbtnNewToggleButton);
+
+			JRadioButton rdbtnNewRadioButton_3 = new JRadioButton("Ida");
+	        panelAux.add(rdbtnNewRadioButton_3);
 	        
-	        JButton btnNewButton_1 = new JButton("Guardar");
-	        panel3.add(btnNewButton_1);
+	        JRadioButton rdbtnNewRadioButton_4 = new JRadioButton("Vuelta");
+	        panelAux.add(rdbtnNewRadioButton_4);
 	        
+	        rdbtnNewRadioButton_3.setSelected(true);
+	        
+	        ButtonGroup idaVUelta = new ButtonGroup();
+	        idaVUelta.add(rdbtnNewRadioButton_3);
+	        idaVUelta.add(rdbtnNewRadioButton_4);
+			panel3.add(panelAux);
+	        
+			Boolean trayec;
+			if(rdbtnNewRadioButton_3.isSelected()) trayec = true;
+			else trayec = false;
+			Minibus rutaMiniSeleccionada = (Minibus) listaRutasmini.getSelectedItem(); 
+			this.idMini = rutaMiniSeleccionada.getId();
+
+	       // JToggleButton tglbtnNewToggleButton = new JToggleButton("ida");
+	        
+	        JButton guardarMini = new JButton("Guardar");
+	        panel3.add(guardarMini);
+			
+			guardarMini.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e)
+				{
+					try
+					{
+						PuntosMinibus nMini = new PuntosMinibus(longitude, latitude, (Zona)comboBox.getSelectedItem(), idMini, (String)comboBoxColor.getSelectedItem(), trayec);
+
+						nMini.guardarParada();
+						JOptionPane.showMessageDialog(contentPane, "Parada Guardada correctamente");
+					} catch(SQLException sqe){
+						sqe.printStackTrace();
+					}
+				}
+			});
 	        
 	        
 	        ActionListener radioListener = new ActionListener() {
@@ -526,6 +594,8 @@ public class CrearParada2<E> extends JFrame {
 	                }
 	            }
 	        };
+
+
 
 	 
 	        rdbtnNewRadioButton.addActionListener(radioListener);

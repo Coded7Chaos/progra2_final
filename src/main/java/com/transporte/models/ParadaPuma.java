@@ -16,9 +16,9 @@ public class ParadaPuma extends Parada{
     
     
     
-    public ParadaPuma(double longitud, double latitud, Zona zona, String nombre, String direccion, Boolean estado,
+    public ParadaPuma(double longitud, double latitud, Zona zona, int idRuta, String nombre, String direccion, Boolean estado,
             Boolean trayectoria, int tiempoDeEspera) {
-        super(longitud, latitud, zona);
+        super(longitud, latitud, zona, idRuta);
         this.nombre = nombre;
         this.direccion = direccion;
         this.estado = estado;

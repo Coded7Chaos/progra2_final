@@ -1,14 +1,13 @@
 package com.transporte.models;
 
 import java.sql.SQLException;
-import java.util.List;
 public abstract class Parada
 {
 	protected int idParada;
 	protected double longitud;
 	protected double latitud;
 	protected Zona zona;
-    protected List<Ruta> rutas;
+    protected int idRuta;
 
 
 
@@ -39,16 +38,17 @@ public abstract class Parada
                 + ", zona=" + zona + "]";
     }
 
-    public Parada(double longitud, double latitud, Zona zona) {
+    public Parada(double longitud, double latitud, Zona zona, int idRuta) {
         this.longitud = longitud;
         this.latitud = latitud;
         this.zona = zona;
+        this.idRuta = idRuta;
     }
-    public List<Ruta> getRutas() {
-        return rutas;
+    public int getIdRuta() {
+        return idRuta;
     }
-    public void setRutas(List<Ruta> rutas) {
-        this.rutas = rutas;
+    public void setIdRuta(int idRuta) {
+        this.idRuta = idRuta;
     }
 
 }

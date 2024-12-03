@@ -55,8 +55,8 @@ public class PuntosMinibus extends Parada{
         throw new UnsupportedOperationException("Unimplemented method 'eliminarParada'");
     }
 
-    public PuntosMinibus(double longitud, double latitud, Zona zona, String color, Boolean trayectoria) {
-        super(longitud, latitud, zona);
+    public PuntosMinibus(double longitud, double latitud, Zona zona, int idRuta, String color, Boolean trayectoria) {
+        super(longitud, latitud, zona, idRuta);
         this.color = color;
         this.trayectoria = trayectoria;
     }
