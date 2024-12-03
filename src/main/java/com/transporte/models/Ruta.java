@@ -92,4 +92,10 @@ public abstract class Ruta
     public abstract void guardarRuta() throws SQLException;
     public abstract void actualizarRuta() throws SQLException;
     public abstract void eliminarRuta() throws SQLException;
+
+    @Override
+    public String toString()
+    {
+        return String.format("%s - %s", nombreInicio, nombreFin);
+    }
 }

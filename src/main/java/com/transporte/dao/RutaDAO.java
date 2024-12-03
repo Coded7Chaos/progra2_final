@@ -62,6 +62,7 @@ public class RutaDAO
 
         return rutas;
     }
+
     public static Ruta obtenerRutaPorId(int id) throws SQLException
     {
         Ruta route = new Pumakatari();
@@ -129,7 +130,7 @@ public class RutaDAO
                 int estado              = rs.getInt("estado");
 
                 ParadaDAO pdao = new ParadaDAO();
-                List<Parada> paradas = pdao.obtenerParadaPorId(id_ruta);
+                List<Parada> paradas = pdao.obtenerPuntosPorId(id_ruta, tipo_transporte);
 
                 List<Tarifa> tarifas = TarifaDAO.obtenerTarifasPorRuta(id_ruta);
 
@@ -154,9 +155,13 @@ public class RutaDAO
                 rutas.add(route);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Error SQL: " + e.getMessage());
             throw e;
         }
         return rutas;
     }
 }
+
+
+
+
